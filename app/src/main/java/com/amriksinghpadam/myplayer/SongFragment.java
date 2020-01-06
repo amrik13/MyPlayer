@@ -40,10 +40,12 @@ public class SongFragment extends Fragment {
     private TextView moreFeature,moreLatest,moreDiscover;
     private ArrayList artistImageArrayList = new ArrayList();
     private ArrayList artistTitleArrayList = new ArrayList();
+    private ArrayList artistIdArrayList = new ArrayList();
     private ArrayList latestImageArrayList = new ArrayList();
     private ArrayList latestTitleArrayList = new ArrayList();
     private ArrayList discoverImageArrayList = new ArrayList();
     private ArrayList discoverTitleArrayList = new ArrayList();
+    private ArrayList discoverIdArrayList = new ArrayList();
     PlayerLayoutAdapter playerLayoutAdapter,playerLayoutAdapter2,playerLayoutAdapter3;
     private ImageView topImgLayout1,topImgLayout2,topImgLayout3,topImgLayout4;
     private ArrayList topImgURLList = new ArrayList();
@@ -104,6 +106,7 @@ public class SongFragment extends Fragment {
                 JSONObject obj = artistArrayList.get(i);
                 artistImageArrayList.add(obj.getString(APIConstent.IMAGEURL));
                 artistTitleArrayList.add(obj.getString("artistname"));
+                artistIdArrayList.add(obj.getString("artistid"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -126,6 +129,7 @@ public class SongFragment extends Fragment {
                 JSONObject obj = discoverArrayList.get(i);
                 discoverImageArrayList.add(obj.getString(APIConstent.IMAGEURL));
                 discoverTitleArrayList.add(obj.getString("language").toUpperCase());
+                discoverIdArrayList.add(obj.getString("languageid"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -195,17 +199,20 @@ public class SongFragment extends Fragment {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(layoutManager);
-        playerLayoutAdapter = new PlayerLayoutAdapter(getContext(),artistImageArrayList,artistTitleArrayList,false);
+        playerLayoutAdapter = new PlayerLayoutAdapter(getContext(),artistImageArrayList,
+                artistTitleArrayList,artistIdArrayList,false);
         recyclerView.setAdapter(playerLayoutAdapter);
 
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
         recyclerView2.setLayoutManager(layoutManager2);
-        playerLayoutAdapter2 = new PlayerLayoutAdapter(getContext(),latestImageArrayList,latestTitleArrayList,true);
+        playerLayoutAdapter2 = new PlayerLayoutAdapter(getContext(),latestImageArrayList,
+                latestTitleArrayList,null,true);
         recyclerView2.setAdapter(playerLayoutAdapter2);
 
         LinearLayoutManager layoutManager3 = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
         recyclerView3.setLayoutManager(layoutManager3);
-        playerLayoutAdapter3 = new PlayerLayoutAdapter(getContext(),discoverImageArrayList,discoverTitleArrayList,false);
+        playerLayoutAdapter3 = new PlayerLayoutAdapter(getContext(),discoverImageArrayList,
+                discoverTitleArrayList,discoverIdArrayList,false);
         recyclerView3.setAdapter(playerLayoutAdapter3);
     }
 

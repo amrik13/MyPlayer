@@ -2,7 +2,6 @@ package com.amriksinghpadam.myplayer;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,27 +12,28 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.VideoListHolder> {
 
+    static int tempCount = 0;
     private Context context;
     private ArrayList imageList = new ArrayList();
     private ArrayList tittleList = new ArrayList();
-    static int tempCount = 0;
 
-    public VideoListAdapter(Context context, ArrayList iList, ArrayList tList){
+    public VideoListAdapter(Context context, ArrayList iList, ArrayList tList) {
         this.context = context;
         this.imageList.addAll(iList);
         this.tittleList.addAll(tList);
     }
+
     @NonNull
     @Override
     public VideoListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.video_list_recycler_view_single_item,parent,false);
+        View view = inflater.inflate(R.layout.video_list_recycler_view_single_item, parent, false);
         VideoListHolder holder = new VideoListHolder(view);
         return holder;
     }
@@ -47,10 +47,10 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.Vide
         holder.videoBanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(tempCount==0){
-                    Intent intent = new Intent(context,VideoExoPlayer.class);
+                if (tempCount == 0) {
+                    Intent intent = new Intent(context, VideoExoPlayer.class);
                     Bundle bundle = new Bundle();
-                    bundle.putString("title",tittleList.get(position).toString());
+                    bundle.putString("title", tittleList.get(position).toString());
                     intent.putExtras(bundle);
                     context.startActivity(intent);
                     tempCount++;
@@ -66,7 +66,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.Vide
         return imageList.size();
     }
 
-    class VideoListHolder extends RecyclerView.ViewHolder{
+    class VideoListHolder extends RecyclerView.ViewHolder {
         ImageView videoBanner;
         TextView videoTitle;
 

@@ -56,7 +56,7 @@ public class MainFragment extends Fragment {
 
 
         Bundle bundle = getArguments();
-        if(bundle!=null) {
+        if (bundle != null) {
             String songTitle = bundle.getString(APIConstent.SONG_TITLE);
             String videoTitle = bundle.getString(APIConstent.VIDEO_TITLE);
             songBannerUrl = bundle.getString(APIConstent.SONG_BANNER);
@@ -65,14 +65,14 @@ public class MainFragment extends Fragment {
             videoTitleView.setText(videoTitle.toUpperCase());
             loadBackgroundImage();
         }
-        final Intent intent = new Intent(context , PlayerActivity.class);
+        final Intent intent = new Intent(context, PlayerActivity.class);
         final Bundle bundle2 = new Bundle();
-        final SongAPIRequest songAPIRequest = new SongAPIRequest(context,intent,bundle2,progressBarLayout,refreshIconLayout);
-        layout1.setOnClickListener  (new View.OnClickListener() {
+        final SongAPIRequest songAPIRequest = new SongAPIRequest(context, intent, bundle2, progressBarLayout, refreshIconLayout);
+        layout1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(tempCount==0){
-                    String topImgapiURL = APIConstent.SSL_SCHEME+APIConstent.BASE_URL+APIConstent.TOP_IMAGE_URL_PARAM;
+                if (tempCount == 0) {
+                    String topImgapiURL = APIConstent.SSL_SCHEME + APIConstent.BASE_URL + APIConstent.TOP_IMAGE_URL_PARAM;
                     songAPIRequest.callMediaAPIRequest(1, topImgapiURL);
                 }
             }
@@ -81,7 +81,7 @@ public class MainFragment extends Fragment {
         layout2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(tempCount==0) {
+                if (tempCount == 0) {
                     //songAPIRequest.callMediaAPIRequest(2);
                 }
             }
@@ -91,19 +91,19 @@ public class MainFragment extends Fragment {
             public void onClick(View v) {
                 APIConstent.CONNECTIVITY = false;
                 ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     Network network = connectivityManager.getActiveNetwork();
-                    if(network!=null){
+                    if (network != null) {
                         refreshIconLayout.setVisibility(View.GONE);
                     }
-                }else{
+                } else {
                     NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-                    if(networkInfo!=null){
+                    if (networkInfo != null) {
                         refreshIconLayout.setVisibility(View.GONE);
                     }
                 }
-                if(!APIConstent.CONNECTIVITY){
-                    MainFragment.tempCount=0;
+                if (!APIConstent.CONNECTIVITY) {
+                    MainFragment.tempCount = 0;
                     refreshIconLayout.setVisibility(View.VISIBLE);
                     showToast(context.getResources().getString(R.string.internet_error_msg));
                 }
@@ -114,22 +114,26 @@ public class MainFragment extends Fragment {
     }
 
 
-    public void loadBackgroundImage(){
+    public void loadBackgroundImage() {
         Glide.with(context).load(songBannerUrl).into(new CustomTarget<Drawable>() {
             @Override
             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                 songBannerView.setBackground(resource);
             }
+
             @Override
-            public void onLoadCleared(@Nullable Drawable placeholder) {}
+            public void onLoadCleared(@Nullable Drawable placeholder) {
+            }
         });
         Glide.with(context).load(videoBannerUrl).into(new CustomTarget<Drawable>() {
             @Override
             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                 videoBannerView.setBackground(resource);
             }
+
             @Override
-            public void onLoadCleared(@Nullable Drawable placeholder) {}
+            public void onLoadCleared(@Nullable Drawable placeholder) {
+            }
         });
     }
 
@@ -141,7 +145,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        tempCount=0;
+        tempCount = 0;
     }
 
     public void showToast(String msg) {
