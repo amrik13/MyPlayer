@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="#000"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <FrameLayout
+        android:id="@+id/videoFrameLayoutId"
+        android:layout_width="match_parent"
+        android:layout_height="230dp" >
+
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/exo_player_id"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:paddingBottom="10dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/exoVideoTitle"
+            android:text="Video Title"
+            android:textColor="#fff"
+            android:textSize="18sp"
+            android:paddingTop="5dp"
+            android:layout_gravity="left"
+            android:layout_weight="2.9"
+            android:paddingLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/exoShareBtn"
+            android:textColor="#fff"
+            android:paddingTop="5dp"
+            android:layout_weight="0.1"
+            android:layout_gravity="right"
+            android:src="@drawable/ic_share_white_24dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:background="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="#000"
+        android:paddingTop="10dp"
+        android:paddingBottom="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/metadataSingerNameId"
+            android:text="Singer Name"
+            android:textColor="#fff"
+            android:textSize="15sp"
+            android:paddingTop="0dp"
+            android:layout_gravity="left"
+            android:paddingLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/metadataDescription"
+            android:text="Description"
+            android:textColor="#fff"
+            android:textSize="15sp"
+            android:paddingTop="10dp"
+            android:layout_gravity="left"
+            android:paddingLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:background="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
+    <LinearLayout
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="#000"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="Related Content:"
+            android:textSize="20sp"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <FrameLayout
+        android:background="#000"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/related_content_recyclerview_id"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
+</LinearLayout>

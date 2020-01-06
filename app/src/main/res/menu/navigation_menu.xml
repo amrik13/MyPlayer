@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item android:title="Song">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item android:title="Artist"
+                    android:id="@+id/nav_feature_id"
+                    android:icon="@drawable/ic_featured_play_list_black_24dp"/>
+                <item android:title="Latest"
+                    android:id="@+id/nav_latest_id"
+                    android:icon="@drawable/ic_new_releases_black_24dp"/>
+                <item android:title="Discover"
+                    android:id="@+id/nav_discover_id"
+                    android:icon="@drawable/ic_discover_type_black_24dp"/>
+            </group>
+        </menu>
+    </item>
+    <item android:title="Video">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item android:title="Most Watched"
+                    android:id="@+id/nav_most_watch_id"
+                    android:icon="@drawable/ic_most_watch_24dp"/>
+                <item android:title="New Arrival"
+                    android:id="@+id/nav_new_video_id"
+                    android:icon="@drawable/ic_new_releases_black_24dp"/>
+                <item android:title="Hindi/Punjabi"
+                    android:id="@+id/nav_indian_video_id"
+                    android:icon="@drawable/ic_local_movies_black_24dp"/>
+                <item android:title="English"
+                    android:id="@+id/nav_englishi_video_id"
+                    android:icon="@drawable/ic_hollywood_video_24dp"/>
+            </group>
+        </menu>
+    </item>
+
+
+</menu>
