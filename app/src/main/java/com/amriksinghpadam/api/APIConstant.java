@@ -51,6 +51,9 @@ public class APIConstant {
     final public static String FILTER_LANGUAGE_SONG_URL = "player_api/call_api_request.php?discover_song=$$language$id$$&discover_song_content=DICSCOVER+SONG";
     final public static String TOP_IMAGE = "topimage";
     final public static String CAROUSEL = "carousel";
+    final public static String SONG_DESCRIPTION = "songdescription";
+    final public static String SONG_URL = "songurl";
+    final public static String SINGER_NAME = "singername";
 
     //Media Pager View Selectiong Key
     final public static String SECTION = "section";

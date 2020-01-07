@@ -11,12 +11,14 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amriksinghpadam.api.APIConstant;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
@@ -41,8 +43,8 @@ public class ExoPlayerFragment extends Fragment {
     private PlayerView exoplayerView;
     private SimpleExoPlayer player;
     private ImageView shareBtnImg;
-    private TextView videoTitle;
-    private String vTitle;
+    private TextView videoTitle,metaDescription,singerNameTextView;
+    private String vTitle,singerName,description,contentURL;
     private RecyclerView relatedContentRecyclerView;
     private ArrayList imageArrayList = new ArrayList();
     private ArrayList nameArrayList = new ArrayList();
@@ -61,7 +63,10 @@ public class ExoPlayerFragment extends Fragment {
         exoplayerView = view.findViewById(R.id.exo_player_id);
         shareBtnImg = view.findViewById(R.id.exoShareBtn);
         videoTitle = view.findViewById(R.id.exoVideoTitle);
+        metaDescription = view.findViewById(R.id.metadataDescription);
+        singerNameTextView = view.findViewById(R.id.metadataSingerNameId);
         relatedContentRecyclerView = view.findViewById(R.id.related_content_recyclerview_id);
+
         initializePlayer();
         initRelatedRecyclerView();
         shareBtnImg.setOnClickListener(new View.OnClickListener() {
@@ -87,11 +92,14 @@ public class ExoPlayerFragment extends Fragment {
     }
 
     public void initializePlayer(){
-        vTitle = getActivity().getIntent().getExtras().getString("title");
-        if(getArguments()!=null){
-            vTitle = getArguments().getString("title");
-        }
-        videoTitle.setText(vTitle);
+        vTitle = getActivity().getIntent().getExtras().getString(APIConstant.TITLE);
+        description = getActivity().getIntent().getExtras().getString(APIConstant.SONG_DESCRIPTION);
+        singerName = getActivity().getIntent().getExtras().getString(APIConstant.SINGER_NAME);
+        contentURL = getActivity().getIntent().getExtras().getString(APIConstant.SONG_URL);
+
+        videoTitle.setText(TextUtils.isEmpty(vTitle)||vTitle==null?"Loading...":vTitle);
+        metaDescription.setText(TextUtils.isEmpty(description)||description==null?"Description: "+"Loading...":"Description: "+description);
+        singerNameTextView.setText(TextUtils.isEmpty(singerName)||singerName==null?"Singer: "+"Loading...":"Singer: "+singerName);
         BandwidthMeter meter =new DefaultBandwidthMeter();
         TrackSelection.Factory factory = new AdaptiveTrackSelection.Factory(meter);
         TrackSelector trackSelector = new DefaultTrackSelector(factory);
@@ -101,8 +109,8 @@ public class ExoPlayerFragment extends Fragment {
         DataSource.Factory datasourcefactory = new DefaultDataSourceFactory(
                 context, Util.getUserAgent(context,"CloudinaryExoplaye"));
         ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-        Uri videoURL = Uri.parse(
-                "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4");
+        Uri videoURL = Uri.parse(TextUtils.isEmpty(contentURL)||contentURL==null?"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+                                    : contentURL);
         MediaSource mediaSource = new ExtractorMediaSource(
                 videoURL, datasourcefactory, extractorsFactory, null,null);
         player.prepare(mediaSource);
@@ -121,4 +129,9 @@ public class ExoPlayerFragment extends Fragment {
         relatedContentRecyclerView.setAdapter(videoRecyclerViewAdapter);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        player.stop();
+    }
 }

@@ -22,6 +22,9 @@ public class CommonPlayerGridView extends AppCompatActivity {
     private ArrayList bannerList = new ArrayList();
     private ArrayList tittleList = new ArrayList();
     private ArrayList singerNameList = new ArrayList();
+    private ArrayList discriptionList = new ArrayList();
+    private ArrayList songURLList = new ArrayList();
+
     private ArrayList singleIdList = new ArrayList();
     private RecyclerView commonRecyclerView;
     private CommonGridPlayerRecyclerViewAdapter adapter;
@@ -58,6 +61,8 @@ public class CommonPlayerGridView extends AppCompatActivity {
                         bannerList.add(obj.getString("songbannerurl"));
                         tittleList.add(obj.getString("songtitle"));
                         singerNameList.add(obj.getString("artistname"));
+                        discriptionList.add(obj.getString("songdescription"));
+                        songURLList.add(obj.getString("songurl"));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -73,6 +78,8 @@ public class CommonPlayerGridView extends AppCompatActivity {
                         bannerList.add(obj.getString("songbannerurl"));
                         tittleList.add(obj.getString("songtitle"));
                         singerNameList.add(obj.getString("artistname"));
+                        discriptionList.add(obj.getString("songdescription"));
+                        songURLList.add(obj.getString("songurl"));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -161,7 +168,7 @@ public class CommonPlayerGridView extends AppCompatActivity {
 
         GridLayoutManager layoutManager = new GridLayoutManager(this,3, LinearLayoutManager.VERTICAL,false);
         commonRecyclerView.setLayoutManager(layoutManager);
-        adapter = new CommonGridPlayerRecyclerViewAdapter(this,bannerList,tittleList,singleIdList);
+        adapter = new CommonGridPlayerRecyclerViewAdapter(this,bannerList,tittleList,singleIdList,singerNameList,discriptionList,songURLList);
         adapter.setProgressBar(progressBarLayout,selectionCode);
         commonRecyclerView.setAdapter(adapter);
 

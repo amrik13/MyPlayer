@@ -27,14 +27,21 @@ public class CommonGridPlayerRecyclerViewAdapter extends RecyclerView.Adapter<Co
     private ArrayList bannerList = new ArrayList();
     private ArrayList titleList = new ArrayList();
     private ArrayList singleIdList = new ArrayList();
+    private ArrayList singerNameList = new ArrayList();
+    private ArrayList descriptionList = new ArrayList();
+    private ArrayList songURLList = new ArrayList();
     private int selectionCode;
     private RelativeLayout progressBarLayout;
 
-    public CommonGridPlayerRecyclerViewAdapter(Context context, ArrayList bList, ArrayList tList,ArrayList singleIdList) {
+    public CommonGridPlayerRecyclerViewAdapter(Context context, ArrayList bList, ArrayList tList,ArrayList singleIdList,
+                                               ArrayList singerNameList,ArrayList descriptionList, ArrayList songURLList) {
         this.context = context;
         bannerList.addAll(bList);
         titleList.addAll(tList);
         this.singleIdList.addAll(singleIdList);
+        this.singerNameList.addAll(singerNameList);
+        this.descriptionList.addAll(descriptionList);
+        this.songURLList.addAll(songURLList);
     }
 
     public void setProgressBar(RelativeLayout progressBarLayout, int selectionCode) {
@@ -96,7 +103,10 @@ public class CommonGridPlayerRecyclerViewAdapter extends RecyclerView.Adapter<Co
                         APIConstant.IS_FIRST_TIME_FROM_SIDENAV = false;
                         Intent intent = new Intent(context, VideoExoPlayer.class);
                         Bundle bundle = new Bundle();
-                        bundle.putString(APIConstant.TITLE, titleList.get(position).toString());
+                        bundle.putString(APIConstant.TITLE, titleList.size()>0 ? titleList.get(position).toString():"");
+                        bundle.putString(APIConstant.SINGER_NAME, singerNameList.size()>0 ? singerNameList.get(position).toString():"");
+                        bundle.putString(APIConstant.SONG_DESCRIPTION,descriptionList.size()>0 ? descriptionList.get(position).toString():"");
+                        bundle.putString(APIConstant.SONG_URL,songURLList.size()>0 ? songURLList.get(position).toString():"");
                         intent.putExtras(bundle);
                         context.startActivity(intent);
                         tempCount++;
