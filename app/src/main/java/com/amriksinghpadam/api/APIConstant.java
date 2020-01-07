@@ -13,7 +13,7 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class APIConstent {
+public class APIConstant {
     public static boolean CONNECTIVITY;
     public static boolean IS_SHARED_PREF_SAVED;
     final public static String BASE_URL = "amriksinghpadam.com/MyplayerAPI/";
@@ -28,10 +28,13 @@ public class APIConstent {
     final public static String SONG_BANNER = "songbanner";
     final public static String VIDEO_BANNER = "videobanner";
 //side navigation bar items params
+    public static boolean IS_FIRST_TIME_FROM_SIDENAV;
     final public static String TITLE = "title";
     final public static String TYPE = "type";
     final public static String SONG = "song";
     final public static String VIDEO = "video";
+    final public static String DISCOVER_SONG = "discoversong";
+    final public static String ARTIST_SONG = "artistsong";
     final public static String ARTIST_URL_PARAM = "player_api/call_api_request.php?artist_data=ARTIST";
     final public static String LATEST_URL_PARAM = "player_api/call_api_request.php?latest_song=LATEST+SONG";
     final public static String DISCOVER_URL_PARAM = "player_api/call_api_request.php?language_data=LANGUAGE";
@@ -42,11 +45,19 @@ public class APIConstent {
 // Song API url param
     final public static String TOP_IMAGE_URL_PARAM = "player_api/call_api_request.php?top_image_data=TOP+IMAGE";
     final public static String TOP_AUTO_CAROUSEL_BANNER_URL_PARAM = "player_api/call_api_request.php?all_carousel_data=CAROUSEL";
+    //$$artist$id$$ this need to replace by artist id
+    final public static String FILTER_ARTIST_SONG_URL_PARAM = "player_api/call_api_request.php?artist_song=$$artist$id$$&artist_song_content=ARTIST-SONG";
+    //$$language$id$$ this need to replace by artist id
+    final public static String FILTER_LANGUAGE_SONG_URL = "player_api/call_api_request.php?discover_song=$$language$id$$&discover_song_content=DICSCOVER+SONG";
     final public static String TOP_IMAGE = "topimage";
     final public static String CAROUSEL = "carousel";
 
     //Media Pager View Selectiong Key
     final public static String SECTION = "section";
+    final public static int ARTIST_CODE = 1;
+    final public static int LATEST_SONG_CODE = 2;
+    final public static int DISCOVER_SONG_CODE = 3;
+    public static int SELECTED_SONG_SECTION;
 
 // API server Connection with string response
     public static String connectToServerWithURL(String uri){

@@ -6,7 +6,7 @@ import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.amriksinghpadam.api.APIConstent;
+import com.amriksinghpadam.api.APIConstant;
 import com.google.android.material.tabs.TabLayout;
 
 import myviewpager.CustomPager;
@@ -36,7 +36,7 @@ public class PlayerActivity extends AppCompatActivity {
         progressBarLayout.setVisibility(View.GONE);
 
         if (getIntent() != null) {
-            section = getIntent().getExtras().getInt(APIConstent.SECTION);
+            section = getIntent().getExtras().getInt(APIConstant.SECTION);
         }
         myViewPagerAdapter = new MyViewPagerAdapter(getSupportFragmentManager(), section);
         viewPager.setAdapter(myViewPagerAdapter);

@@ -33,30 +33,30 @@ public class SongAPIRequest {
 
     public void callMediaAPIRequest(int section, String topImageAPIURl) {
         this.section = section;
-        APIConstent.CONNECTIVITY = false;
+        APIConstant.CONNECTIVITY = false;
         ConnectivityManager connectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Network network = connectivityManager.getActiveNetwork();
             if (network != null) {
                 MainFragment.tempCount = 1;
-                APIConstent.CONNECTIVITY = true;
+                APIConstant.CONNECTIVITY = true;
                 refreshIconLayout.setVisibility(View.GONE);
                 new MediaAPIAsyncTask().execute(topImageAPIURl);
 
                 NavigationItemRequest navRequest1 = new NavigationItemRequest(mContext,
                         progressBarLayout, refreshIconLayout, null, null, false);
                 navRequest1.startNavItemActivity(mContext.getResources().getString(R.string.artist_title),
-                        mContext.getResources().getString(R.string.song), APIConstent.ARTIST_URL_PARAM,
+                        mContext.getResources().getString(R.string.song), APIConstant.ARTIST_URL_PARAM,
                         SharedPrefUtil.ARTIST_JSON_RESPONSE);
                 NavigationItemRequest navRequest2 = new NavigationItemRequest(mContext,
                         progressBarLayout, refreshIconLayout, null, null, false);
                 navRequest2.startNavItemActivity(mContext.getResources().getString(R.string.latest_song),
-                        mContext.getResources().getString(R.string.song), APIConstent.LATEST_URL_PARAM,
+                        mContext.getResources().getString(R.string.song), APIConstant.LATEST_URL_PARAM,
                         SharedPrefUtil.LATEST_JSON_RESPONSE);
                 NavigationItemRequest navRequest3 = new NavigationItemRequest(mContext,
                         progressBarLayout, refreshIconLayout, null, null, false);
                 navRequest3.startNavItemActivity(mContext.getResources().getString(R.string.discover),
-                        mContext.getResources().getString(R.string.song), APIConstent.DISCOVER_URL_PARAM,
+                        mContext.getResources().getString(R.string.song), APIConstant.DISCOVER_URL_PARAM,
                         SharedPrefUtil.DISCOVER_JSON_RESPONSE);
 
             }
@@ -64,12 +64,12 @@ public class SongAPIRequest {
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
             if (networkInfo != null) {
                 MainFragment.tempCount = 1;
-                APIConstent.CONNECTIVITY = true;
+                APIConstant.CONNECTIVITY = true;
                 refreshIconLayout.setVisibility(View.GONE);
 
             }
         }
-        if (!APIConstent.CONNECTIVITY) {
+        if (!APIConstant.CONNECTIVITY) {
             MainFragment.tempCount = 0;
             refreshIconLayout.setVisibility(View.VISIBLE);
             showToast(mContext.getResources().getString(R.string.internet_error_msg));
@@ -88,7 +88,7 @@ public class SongAPIRequest {
         @Override
         protected String doInBackground(String... param) {
             if (param != null && param[0] != null && !TextUtils.isEmpty(param[0])) {
-                String topImgJsonResponse = APIConstent.connectToServerWithURL(param[0]);
+                String topImgJsonResponse = APIConstant.connectToServerWithURL(param[0]);
                 return topImgJsonResponse;
             }
             return "";
@@ -99,11 +99,11 @@ public class SongAPIRequest {
             if (topImgResponse != null && !TextUtils.isEmpty(topImgResponse)) {
                 super.onPostExecute(topImgResponse);
                 SharedPrefUtil.setTopImageJsonResponse(mContext, topImgResponse, SharedPrefUtil.TOP_IMAGE_JSONRESPONSE);
-//                bundle.putInt(APIConstent.SECTION, section);
+//                bundle.putInt(APIConstant.SECTION, section);
 //                intent.putExtras(bundle);
 //                mContext.startActivity(intent);
 //                progressBarLayout.setVisibility(View.GONE);
-                new TopCarouselAPIAsyncTask().execute(APIConstent.SSL_SCHEME + APIConstent.BASE_URL + APIConstent.TOP_AUTO_CAROUSEL_BANNER_URL_PARAM);
+                new TopCarouselAPIAsyncTask().execute(APIConstant.SSL_SCHEME + APIConstant.BASE_URL + APIConstant.TOP_AUTO_CAROUSEL_BANNER_URL_PARAM);
             } else {
                 MainFragment.tempCount = 0;
                 progressBarLayout.setVisibility(View.GONE);
@@ -124,7 +124,7 @@ public class SongAPIRequest {
         @Override
         protected String doInBackground(String... param) {
             if (param != null && param[0] != null && !TextUtils.isEmpty(param[0])) {
-                String autoCarouselBannerJsonResponse = APIConstent.connectToServerWithURL(param[0]);
+                String autoCarouselBannerJsonResponse = APIConstant.connectToServerWithURL(param[0]);
                 return autoCarouselBannerJsonResponse;
             }
             return "";
@@ -135,7 +135,7 @@ public class SongAPIRequest {
             if (autoCarouselBannerResponse != null && !TextUtils.isEmpty(autoCarouselBannerResponse)) {
                 super.onPostExecute(autoCarouselBannerResponse);
                 SharedPrefUtil.setTopAutoCarouselJsonResponse(mContext, autoCarouselBannerResponse, SharedPrefUtil.TOP_AUTO_CAROUSEL_JSON_RESPONSE);
-                bundle.putInt(APIConstent.SECTION, section);
+                bundle.putInt(APIConstant.SECTION, section);
                 intent.putExtras(bundle);
                 mContext.startActivity(intent);
                 progressBarLayout.setVisibility(View.GONE);
