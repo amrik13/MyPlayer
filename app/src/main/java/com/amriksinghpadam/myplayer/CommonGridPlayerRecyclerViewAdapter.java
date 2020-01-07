@@ -7,10 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.amriksinghpadam.api.APIConstant;
+import com.amriksinghpadam.api.SharedPrefUtil;
+import com.amriksinghpadam.api.SongAPIRequestWithFilter;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -21,11 +26,20 @@ public class CommonGridPlayerRecyclerViewAdapter extends RecyclerView.Adapter<Co
     private Context context;
     private ArrayList bannerList = new ArrayList();
     private ArrayList titleList = new ArrayList();
+    private ArrayList singleIdList = new ArrayList();
+    private int selectionCode;
+    private RelativeLayout progressBarLayout;
 
-    public CommonGridPlayerRecyclerViewAdapter(Context context, ArrayList bList, ArrayList tList) {
+    public CommonGridPlayerRecyclerViewAdapter(Context context, ArrayList bList, ArrayList tList,ArrayList singleIdList) {
         this.context = context;
         bannerList.addAll(bList);
         titleList.addAll(tList);
+        this.singleIdList.addAll(singleIdList);
+    }
+
+    public void setProgressBar(RelativeLayout progressBarLayout, int selectionCode) {
+        this.progressBarLayout = progressBarLayout;
+        this.selectionCode = selectionCode;
     }
 
     @NonNull
@@ -46,15 +60,48 @@ public class CommonGridPlayerRecyclerViewAdapter extends RecyclerView.Adapter<Co
             @Override
             public void onClick(View view) {
                 if (tempCount == 0) {
-                    Intent intent = new Intent(context, VideoExoPlayer.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("title", titleList.get(position).toString());
-                    intent.putExtras(bundle);
-                    context.startActivity(intent);
-                    tempCount++;
-                }
+                    if(APIConstant.IS_FIRST_TIME_FROM_SIDENAV){
+                        APIConstant.IS_FIRST_TIME_FROM_SIDENAV = false;
+                        String singleId ="";
+                        if(singleIdList!=null && singleIdList.size()>0)
+                            singleId = singleIdList.get(position).toString();
 
-                //Toast.makeText(context,"Player Starting",Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(context, CommonPlayerGridView.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putString(APIConstant.TITLE, titleList.get(position).toString());
+                            bundle.putString(APIConstant.TYPE, APIConstant.SONG);
+                            intent.putExtras(bundle);
+                            String filterSongReqURL = "";
+                            String sharedPrefKey = "";
+                            switch (selectionCode){
+                                case APIConstant.ARTIST_CODE:
+                                    APIConstant.SELECTED_SONG_SECTION = APIConstant.ARTIST_CODE;
+                                    String artistParam = APIConstant.FILTER_ARTIST_SONG_URL_PARAM.replace("$$artist$id$$",singleId);
+                                    filterSongReqURL = APIConstant.SSL_SCHEME+
+                                            APIConstant.BASE_URL+artistParam;
+                                    sharedPrefKey = SharedPrefUtil.SONG_BY_ARTIST_JSON_RESPONSE;
+                                    break;
+                                case APIConstant.DISCOVER_SONG_CODE:
+                                    APIConstant.SELECTED_SONG_SECTION = APIConstant.DISCOVER_SONG_CODE;
+                                    String discoverParam = APIConstant.FILTER_LANGUAGE_SONG_URL.replace("$$language$id$$",singleId);
+                                    filterSongReqURL = APIConstant.SSL_SCHEME+
+                                            APIConstant.BASE_URL+discoverParam;
+                                    sharedPrefKey = SharedPrefUtil.SONG_BY_LANGUAGE_JSON_RESPONSE;
+                                    break;
+                                default: break;
+                        }
+                        SongAPIRequestWithFilter songRequest = new SongAPIRequestWithFilter(context,intent);
+                        songRequest.sendSongRequestWithFilter(progressBarLayout,filterSongReqURL,sharedPrefKey);
+                    }else {
+                        APIConstant.IS_FIRST_TIME_FROM_SIDENAV = false;
+                        Intent intent = new Intent(context, VideoExoPlayer.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString(APIConstant.TITLE, titleList.get(position).toString());
+                        intent.putExtras(bundle);
+                        context.startActivity(intent);
+                        tempCount++;
+                    }
+                }
             }
         });
     }

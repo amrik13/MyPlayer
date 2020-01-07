@@ -38,32 +38,32 @@ public class NavigationItemRequest {
         this.sharedPrefKey = sharedPrefKey;
         this.pageTitle = pageTitle;
         this.contentType = contentType;
-        APIConstent.CONNECTIVITY = false;
+        APIConstant.CONNECTIVITY = false;
         ConnectivityManager connectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             Network network = connectivityManager.getActiveNetwork();
             if (network != null) {
-                APIConstent.CONNECTIVITY = true;
+                APIConstant.CONNECTIVITY = true;
                 refreshicon.setVisibility(View.GONE);
                 new NavigationItemAPICallTask().execute(
-                        APIConstent.SSL_SCHEME+
-                        APIConstent.BASE_URL+
+                        APIConstant.SSL_SCHEME+
+                        APIConstant.BASE_URL+
                         urlParam
                 );
             }
         } else {
             NetworkInfo network = connectivityManager.getActiveNetworkInfo();
             if (network != null) {
-                APIConstent.CONNECTIVITY = true;
+                APIConstant.CONNECTIVITY = true;
                 refreshicon.setVisibility(View.GONE);
                 new NavigationItemAPICallTask().execute(
-                        APIConstent.SSL_SCHEME+
-                        APIConstent.BASE_URL+
-                        APIConstent.ARTIST_URL_PARAM
+                        APIConstant.SSL_SCHEME+
+                        APIConstant.BASE_URL+
+                        APIConstant.ARTIST_URL_PARAM
                 );
             }
         }
-        if (!APIConstent.CONNECTIVITY) {
+        if (!APIConstant.CONNECTIVITY) {
             showToast(mContext.getResources().getString(R.string.internet_error_msg));
             refreshicon.setVisibility(View.VISIBLE);
         }
@@ -75,14 +75,14 @@ public class NavigationItemRequest {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            APIConstent.IS_SHARED_PREF_SAVED = false;
+            APIConstant.IS_SHARED_PREF_SAVED = false;
             progressBarLayout.setVisibility(View.VISIBLE);
         }
 
         @Override
         protected String doInBackground(String... param) {
             if (param[0]!=null && param!= null && !TextUtils.isEmpty(param[0])) {
-                String response = APIConstent.connectToServerWithURL(param[0]);
+                String response = APIConstant.connectToServerWithURL(param[0]);
                 Log.d("SideNavResponse",response);
                 return response;
             }
@@ -94,15 +94,16 @@ public class NavigationItemRequest {
             super.onPostExecute(response);
             if(response!=null && !TextUtils.isEmpty(response)){
                 SharedPrefUtil.setSideNavItemJsonResponse(mContext,response,sharedPrefKey);
-                if(APIConstent.IS_SHARED_PREF_SAVED) {
+                if(APIConstant.IS_SHARED_PREF_SAVED) {
                     if(isFromSideNavbar) {
-                        bundle.putString(APIConstent.TITLE, pageTitle);
-                        bundle.putString(APIConstent.TYPE, contentType);
+                        bundle.putString(APIConstant.TITLE, pageTitle);
+                        bundle.putString(APIConstant.TYPE, contentType);
                         intent.putExtras(bundle);
                         //showToast("saved and ready to go.");
                         mContext.startActivity(intent);
                     }
                 }else{
+                    //APIConstant.IS_FIRST_TIME_FROM_SIDENAV = false;
                     showToast(mContext.getResources().getString(R.string.empty_shared_pref_error_msg));
                 }
             }

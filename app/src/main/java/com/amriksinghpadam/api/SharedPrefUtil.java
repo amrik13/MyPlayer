@@ -26,14 +26,16 @@ public class SharedPrefUtil {
     final public static String NEWARIVAL = "latestvideo";
     final public static String TOP_IMAGE_JSONRESPONSE = "topimagejsonresponse";
     final public static String TOP_AUTO_CAROUSEL_JSON_RESPONSE = "topautocarouseljsonresponse";
+    final public static String SONG_BY_ARTIST_JSON_RESPONSE =  "songbyartistjsonresponse";
+    final public static String SONG_BY_LANGUAGE_JSON_RESPONSE =  "songbylanguagejsonresponse";
 
     public static void setSideNavItemJsonResponse(Context mContext, String responseJson,String sharedPrefKey){
-        APIConstent.IS_SHARED_PREF_SAVED = false;
+        APIConstant.IS_SHARED_PREF_SAVED = false;
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(MYPLAYER_SHARED_PREF,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(sharedPrefKey,responseJson);
         if(editor.commit())
-            APIConstent.IS_SHARED_PREF_SAVED = true;
+            APIConstant.IS_SHARED_PREF_SAVED = true;
     }
     public static ArrayList<JSONObject> getSideNavArtistJsonResponse(Context mContext,RelativeLayout nodataImageLayout){
         ArrayList<JSONObject> artistResponseList = new ArrayList<>();
@@ -52,7 +54,7 @@ public class SharedPrefUtil {
                         nodataImageLayout.setVisibility(View.VISIBLE);
                     }
                 }
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 if(nodataImageLayout!=null) {
                     nodataImageLayout.setVisibility(View.VISIBLE);
                 }
@@ -76,7 +78,7 @@ public class SharedPrefUtil {
                 }else{
                     nodataImageLayout.setVisibility(View.VISIBLE);
                 }
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 nodataImageLayout.setVisibility(View.VISIBLE);
                 e.printStackTrace();
             }
@@ -98,7 +100,7 @@ public class SharedPrefUtil {
                 }else{
                     nodataImageLayout.setVisibility(View.VISIBLE);
                 }
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 nodataImageLayout.setVisibility(View.VISIBLE);
                 e.printStackTrace();
             }
@@ -120,7 +122,7 @@ public class SharedPrefUtil {
                 }else{
                     nodataImageLayout.setVisibility(View.VISIBLE);
                 }
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 nodataImageLayout.setVisibility(View.VISIBLE);
                 e.printStackTrace();
             }
@@ -134,7 +136,7 @@ public class SharedPrefUtil {
         if(discoverJsonResponse!=null && !TextUtils.isEmpty(discoverJsonResponse)) {
             try {
                 JSONObject jsonObject = new JSONObject(discoverJsonResponse);
-                JSONArray jsonArray = jsonObject.getJSONArray(APIConstent.VIDEO);
+                JSONArray jsonArray = jsonObject.getJSONArray(APIConstant.VIDEO);
                 if(jsonArray!=null && jsonArray.length()>0){
                     for(int i=0;i<jsonArray.length();i++){
                         discoverResponseList.add(jsonArray.getJSONObject(i));
@@ -142,7 +144,7 @@ public class SharedPrefUtil {
                 }else{
                     nodataImageLayout.setVisibility(View.VISIBLE);
                 }
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 nodataImageLayout.setVisibility(View.VISIBLE);
                 e.printStackTrace();
             }
@@ -156,7 +158,7 @@ public class SharedPrefUtil {
         if(discoverJsonResponse!=null && !TextUtils.isEmpty(discoverJsonResponse)) {
             try {
                 JSONObject jsonObject = new JSONObject(discoverJsonResponse);
-                JSONArray jsonArray = jsonObject.getJSONArray(APIConstent.VIDEO);
+                JSONArray jsonArray = jsonObject.getJSONArray(APIConstant.VIDEO);
                 if(jsonArray!=null && jsonArray.length()>0){
                     for(int i=0;i<jsonArray.length();i++){
                         discoverResponseList.add(jsonArray.getJSONObject(i));
@@ -164,7 +166,7 @@ public class SharedPrefUtil {
                 }else{
                     nodataImageLayout.setVisibility(View.VISIBLE);
                 }
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 nodataImageLayout.setVisibility(View.VISIBLE);
                 e.printStackTrace();
             }
@@ -173,12 +175,12 @@ public class SharedPrefUtil {
     }
 //top image response pref
     public static void setTopImageJsonResponse(Context mContext, String responseJson, String sharedPrefKey){
-        APIConstent.IS_SHARED_PREF_SAVED = false;
+        APIConstant.IS_SHARED_PREF_SAVED = false;
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(MYPLAYER_SHARED_PREF,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(sharedPrefKey,responseJson);
         if(editor.commit())
-            APIConstent.IS_SHARED_PREF_SAVED = true;
+            APIConstant.IS_SHARED_PREF_SAVED = true;
     }
     public static ArrayList<JSONObject> getTopImageJsonResponse(Context mContext){
         ArrayList<JSONObject> topImgResponseList = new ArrayList<>();
@@ -187,7 +189,7 @@ public class SharedPrefUtil {
         if(topimgJsonResponse!=null && !TextUtils.isEmpty(topimgJsonResponse)) {
             try {
                 JSONObject jsonObject = new JSONObject(topimgJsonResponse);
-                JSONArray jsonArray = jsonObject.getJSONArray(APIConstent.TOP_IMAGE);
+                JSONArray jsonArray = jsonObject.getJSONArray(APIConstant.TOP_IMAGE);
                 if(jsonArray!=null && jsonArray.length()>0){
                     for(int i=0;i<jsonArray.length();i++){
                         topImgResponseList.add(jsonArray.getJSONObject(i));
@@ -201,12 +203,12 @@ public class SharedPrefUtil {
     }
 //top auto Carousel response pref
     public static void setTopAutoCarouselJsonResponse(Context mContext, String responseJson, String sharedPrefKey){
-        APIConstent.IS_SHARED_PREF_SAVED = false;
+        APIConstant.IS_SHARED_PREF_SAVED = false;
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(MYPLAYER_SHARED_PREF,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(sharedPrefKey,responseJson);
         if(editor.commit())
-            APIConstent.IS_SHARED_PREF_SAVED = true;
+            APIConstant.IS_SHARED_PREF_SAVED = true;
     }
     public static ArrayList<JSONObject> getTopAutoCarouselJsonResponse(Context mContext){
         ArrayList<JSONObject> autoCarouselResponseList = new ArrayList<>();
@@ -215,7 +217,7 @@ public class SharedPrefUtil {
         if(autoCarouselJsonResponse!=null && !TextUtils.isEmpty(autoCarouselJsonResponse)) {
             try {
                 JSONObject jsonObject = new JSONObject(autoCarouselJsonResponse);
-                JSONArray jsonArray = jsonObject.getJSONArray(APIConstent.CAROUSEL);
+                JSONArray jsonArray = jsonObject.getJSONArray(APIConstant.CAROUSEL);
                 if(jsonArray!=null && jsonArray.length()>0){
                     for(int i=0;i<jsonArray.length();i++){
                         autoCarouselResponseList.add(jsonArray.getJSONObject(i));
@@ -227,5 +229,57 @@ public class SharedPrefUtil {
         }
         return autoCarouselResponseList;
     }
-
+//Filtered Song Artist response pref
+    public static void setFilterSongJsonResponse(Context mContext, String responseJson, String sharedPrefKey){
+        APIConstant.IS_SHARED_PREF_SAVED = false;
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(MYPLAYER_SHARED_PREF,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(sharedPrefKey,responseJson);
+        if(editor.commit())
+            APIConstant.IS_SHARED_PREF_SAVED = true;
+    }
+    public static ArrayList<JSONObject> getArtistFilterSongJsonResponse(Context mContext,RelativeLayout nodataImageLayout){
+        ArrayList<JSONObject> artistFilterSongResponseList = new ArrayList<>();
+        SharedPreferences sharedPref = mContext.getSharedPreferences(MYPLAYER_SHARED_PREF,Context.MODE_PRIVATE);
+        String artistFilterSongJsonResponse = sharedPref.getString(SONG_BY_ARTIST_JSON_RESPONSE,"");
+        if(artistFilterSongJsonResponse!=null && !TextUtils.isEmpty(artistFilterSongJsonResponse)) {
+            try {
+                JSONObject jsonObject = new JSONObject(artistFilterSongJsonResponse);
+                JSONArray jsonArray = jsonObject.getJSONArray(APIConstant.ARTIST_SONG);
+                if(jsonArray!=null && jsonArray.length()>0){
+                    for(int i=0;i<jsonArray.length();i++){
+                        artistFilterSongResponseList.add(jsonArray.getJSONObject(i));
+                    }
+                }else{
+                    nodataImageLayout.setVisibility(View.VISIBLE);
+                }
+            } catch (Exception e) {
+                nodataImageLayout.setVisibility(View.VISIBLE);
+                e.printStackTrace();
+            }
+        }
+        return artistFilterSongResponseList;
+    }
+    public static ArrayList<JSONObject> getDiscoverFilterSongJsonResponse(Context mContext,RelativeLayout nodataImageLayout){
+        ArrayList<JSONObject> discoverFilterSongResponseList = new ArrayList<>();
+        SharedPreferences sharedPref = mContext.getSharedPreferences(MYPLAYER_SHARED_PREF,Context.MODE_PRIVATE);
+        String discoverFilterSongJsonResponse = sharedPref.getString(SONG_BY_LANGUAGE_JSON_RESPONSE,"");
+        if(discoverFilterSongJsonResponse!=null && !TextUtils.isEmpty(discoverFilterSongJsonResponse)) {
+            try {
+                JSONObject jsonObject = new JSONObject(discoverFilterSongJsonResponse);
+                JSONArray jsonArray = jsonObject.getJSONArray(APIConstant.DISCOVER_SONG);
+                if(jsonArray!=null && jsonArray.length()>0){
+                    for(int i=0;i<jsonArray.length();i++){
+                        discoverFilterSongResponseList.add(jsonArray.getJSONObject(i));
+                    }
+                }else{
+                    nodataImageLayout.setVisibility(View.VISIBLE);
+                }
+            } catch (Exception e) {
+                nodataImageLayout.setVisibility(View.VISIBLE);
+                e.printStackTrace();
+            }
+        }
+        return discoverFilterSongResponseList;
+    }
 }

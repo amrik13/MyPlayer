@@ -7,12 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.amriksinghpadam.api.APIConstent;
+import com.amriksinghpadam.api.APIConstant;
+import com.amriksinghpadam.api.SharedPrefUtil;
 import com.amriksinghpadam.api.SongAPIRequestWithFilter;
 import com.bumptech.glide.Glide;
 
@@ -26,13 +28,15 @@ public class PlayerLayoutAdapter extends RecyclerView.Adapter<PlayerLayoutAdapte
     private ArrayList textList = new ArrayList();
     private ArrayList singleIdList = new ArrayList();
     private boolean isAllowToPlayer;
+    private RelativeLayout progressBarLayout;
+    private int selectionCode;
 
     PlayerLayoutAdapter(Context context, ArrayList imageList, ArrayList textList, ArrayList singleIdList, boolean isAllowToPlayer) {
         this.context = context;
         this.imageList.addAll(imageList);
         this.textList.addAll(textList);
         this.isAllowToPlayer = isAllowToPlayer;
-        this.singleIdList.addAll(singleIdList);
+        if(singleIdList!=null) this.singleIdList.addAll(singleIdList);
     }
 
     @NonNull
@@ -55,6 +59,11 @@ public class PlayerLayoutAdapter extends RecyclerView.Adapter<PlayerLayoutAdapte
         return imageList.size();
     }
 
+    public void setProgressBar(RelativeLayout progressBarLayout, int selectionCode) {
+        this.progressBarLayout = progressBarLayout;
+        this.selectionCode = selectionCode;
+    }
+
     class PlayerViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView textView;
@@ -74,21 +83,44 @@ public class PlayerLayoutAdapter extends RecyclerView.Adapter<PlayerLayoutAdapte
                 public void onClick(View view) {
                     if (tempCount == 0) {
                         if (isAllowToPlayer) {
+                            APIConstant.SELECTED_SONG_SECTION = APIConstant.LATEST_SONG_CODE;
                             Intent intent = new Intent(context, VideoExoPlayer.class);
                             Bundle bundle = new Bundle();
-                            bundle.putString(APIConstent.TITLE, textList.get(position).toString());
+                            bundle.putString(APIConstant.TITLE, textList.get(position).toString());
                             intent.putExtras(bundle);
                             context.startActivity(intent);
                         } else {
-                            String singleId = singleIdList.get(position).toString();
-                            SongAPIRequestWithFilter songRequest = new SongAPIRequestWithFilter(context, singleId);
+                            String singleId ="";
+                            if(singleIdList!=null && singleIdList.size()>0)
+                                singleId = singleIdList.get(position).toString();
+                            APIConstant.IS_FIRST_TIME_FROM_SIDENAV=false;
                             Intent intent = new Intent(context, CommonPlayerGridView.class);
                             Bundle bundle = new Bundle();
-
-                            bundle.putString(APIConstent.TITLE, textList.get(position).toString());
-                            bundle.putString(APIConstent.TYPE, APIConstent.SONG);
+                            bundle.putString(APIConstant.TITLE, textList.get(position).toString());
+                            bundle.putString(APIConstant.TYPE, APIConstant.SONG);
                             intent.putExtras(bundle);
-                            context.startActivity(intent);
+                            String filterSongReqURL = "";
+                            String sharedPrefKey = "";
+                            switch (selectionCode){
+                                case APIConstant.ARTIST_CODE:
+                                    APIConstant.SELECTED_SONG_SECTION = APIConstant.ARTIST_CODE;
+                                    String artistParam = APIConstant.FILTER_ARTIST_SONG_URL_PARAM.replace("$$artist$id$$",singleId);
+                                    filterSongReqURL = APIConstant.SSL_SCHEME+
+                                                       APIConstant.BASE_URL+artistParam;
+                                    sharedPrefKey = SharedPrefUtil.SONG_BY_ARTIST_JSON_RESPONSE;
+                                    break;
+                                case APIConstant.DISCOVER_SONG_CODE:
+                                    APIConstant.SELECTED_SONG_SECTION = APIConstant.DISCOVER_SONG_CODE;
+                                    String discoverParam = APIConstant.FILTER_LANGUAGE_SONG_URL.replace("$$language$id$$",singleId);
+                                    filterSongReqURL = APIConstant.SSL_SCHEME+
+                                            APIConstant.BASE_URL+discoverParam;
+                                    sharedPrefKey = SharedPrefUtil.SONG_BY_LANGUAGE_JSON_RESPONSE;
+                                    break;
+                                default: break;
+                            }
+                            SongAPIRequestWithFilter songRequest = new SongAPIRequestWithFilter(context,intent);
+                            songRequest.sendSongRequestWithFilter(progressBarLayout,filterSongReqURL,sharedPrefKey);
+
                         }
 
                     }

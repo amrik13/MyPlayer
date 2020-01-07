@@ -20,7 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amriksinghpadam.api.APIConstent;
+import com.amriksinghpadam.api.APIConstant;
 import com.amriksinghpadam.api.SongAPIRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
@@ -57,10 +57,10 @@ public class MainFragment extends Fragment {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            String songTitle = bundle.getString(APIConstent.SONG_TITLE);
-            String videoTitle = bundle.getString(APIConstent.VIDEO_TITLE);
-            songBannerUrl = bundle.getString(APIConstent.SONG_BANNER);
-            videoBannerUrl = bundle.getString(APIConstent.VIDEO_BANNER);
+            String songTitle = bundle.getString(APIConstant.SONG_TITLE);
+            String videoTitle = bundle.getString(APIConstant.VIDEO_TITLE);
+            songBannerUrl = bundle.getString(APIConstant.SONG_BANNER);
+            videoBannerUrl = bundle.getString(APIConstant.VIDEO_BANNER);
             songTitleView.setText(songTitle.toUpperCase());
             videoTitleView.setText(videoTitle.toUpperCase());
             loadBackgroundImage();
@@ -72,7 +72,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (tempCount == 0) {
-                    String topImgapiURL = APIConstent.SSL_SCHEME + APIConstent.BASE_URL + APIConstent.TOP_IMAGE_URL_PARAM;
+                    String topImgapiURL = APIConstant.SSL_SCHEME + APIConstant.BASE_URL + APIConstant.TOP_IMAGE_URL_PARAM;
                     songAPIRequest.callMediaAPIRequest(1, topImgapiURL);
                 }
             }
@@ -89,7 +89,7 @@ public class MainFragment extends Fragment {
         refreshIconLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                APIConstent.CONNECTIVITY = false;
+                APIConstant.CONNECTIVITY = false;
                 ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     Network network = connectivityManager.getActiveNetwork();
@@ -102,7 +102,7 @@ public class MainFragment extends Fragment {
                         refreshIconLayout.setVisibility(View.GONE);
                     }
                 }
-                if (!APIConstent.CONNECTIVITY) {
+                if (!APIConstant.CONNECTIVITY) {
                     MainFragment.tempCount = 0;
                     refreshIconLayout.setVisibility(View.VISIBLE);
                     showToast(context.getResources().getString(R.string.internet_error_msg));

@@ -24,12 +24,12 @@ import android.view.Window;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.amriksinghpadam.api.APIConstent;
+
+import com.amriksinghpadam.api.APIConstant;
 import com.amriksinghpadam.api.NavigationItemRequest;
 import com.amriksinghpadam.api.SharedPrefUtil;
 import com.google.android.material.navigation.NavigationView;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 
@@ -77,24 +77,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkConnectivityandReloadActivity() {
-        APIConstent.CONNECTIVITY = false;
+        APIConstant.CONNECTIVITY = false;
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             Network network = connectivityManager.getActiveNetwork();
             if (network != null) {
-                APIConstent.CONNECTIVITY = true;
+                APIConstant.CONNECTIVITY = true;
                 refreshicon.setVisibility(View.GONE);
-                new ContentTypeAPI().execute(APIConstent.SSL_SCHEME + APIConstent.BASE_URL + APIConstent.CONTENT_TYPE_URL_PARAM);
+                new ContentTypeAPI().execute(APIConstant.SSL_SCHEME + APIConstant.BASE_URL + APIConstant.CONTENT_TYPE_URL_PARAM);
             }
         } else {
             NetworkInfo network = connectivityManager.getActiveNetworkInfo();
             if (network != null) {
-                APIConstent.CONNECTIVITY = true;
+                APIConstant.CONNECTIVITY = true;
                 refreshicon.setVisibility(View.GONE);
-                new ContentTypeAPI().execute(APIConstent.SSL_SCHEME + APIConstent.BASE_URL + APIConstent.CONTENT_TYPE_URL_PARAM);
+                new ContentTypeAPI().execute(APIConstant.SSL_SCHEME + APIConstant.BASE_URL + APIConstant.CONTENT_TYPE_URL_PARAM);
             }
         }
-        if (APIConstent.CONNECTIVITY == false) {
+        if (APIConstant.CONNECTIVITY == false) {
             showToast(getResources().getString(R.string.internet_error_msg));
             refreshicon.setVisibility(View.VISIBLE);
         }
@@ -107,10 +107,10 @@ public class MainActivity extends AppCompatActivity {
         if (contentTypeList != null && contentTypeImgList != null &&
                 contentTypeImgList.size() > 0 && contentTypeList.size() > 0) {
             Bundle bundle = new Bundle();
-            bundle.putString(APIConstent.SONG_TITLE, contentTypeList.get(0));
-            bundle.putString(APIConstent.VIDEO_TITLE, contentTypeList.get(1));
-            bundle.putString(APIConstent.SONG_BANNER, contentTypeImgList.get(0));
-            bundle.putString(APIConstent.VIDEO_BANNER, contentTypeImgList.get(1));
+            bundle.putString(APIConstant.SONG_TITLE, contentTypeList.get(0));
+            bundle.putString(APIConstant.VIDEO_TITLE, contentTypeList.get(1));
+            bundle.putString(APIConstant.SONG_BANNER, contentTypeImgList.get(0));
+            bundle.putString(APIConstant.VIDEO_BANNER, contentTypeImgList.get(1));
             fragMain.setArguments(bundle);
         }
         ft.add(R.id.floatingLayoutId, fragMain);
@@ -125,44 +125,47 @@ public class MainActivity extends AppCompatActivity {
                         progressBarLayout,refreshicon,intent,bundle,true);
                 switch (menuItem.getItemId()) {
                     case R.id.nav_feature_id:
+                        APIConstant.IS_FIRST_TIME_FROM_SIDENAV = true;
                         navRequest.startNavItemActivity(getResources().getString(R.string.artist_title),
-                                getResources().getString(R.string.song),APIConstent.ARTIST_URL_PARAM,
+                                getResources().getString(R.string.song), APIConstant.ARTIST_URL_PARAM,
                                 SharedPrefUtil.ARTIST_JSON_RESPONSE);
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
                     case R.id.nav_latest_id:
+                        APIConstant.IS_FIRST_TIME_FROM_SIDENAV = false;
                         navRequest.startNavItemActivity(getResources().getString(R.string.latest_song),
-                                getResources().getString(R.string.song),APIConstent.LATEST_URL_PARAM,
+                                getResources().getString(R.string.song), APIConstant.LATEST_URL_PARAM,
                                 SharedPrefUtil.LATEST_JSON_RESPONSE);
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
                     case R.id.nav_discover_id:
+                        APIConstant.IS_FIRST_TIME_FROM_SIDENAV = true;
                         navRequest.startNavItemActivity(getResources().getString(R.string.discover),
-                                getResources().getString(R.string.song),APIConstent.DISCOVER_URL_PARAM,
+                                getResources().getString(R.string.song), APIConstant.DISCOVER_URL_PARAM,
                                 SharedPrefUtil.DISCOVER_JSON_RESPONSE);
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
                     case R.id.nav_most_watch_id:
                         navRequest.startNavItemActivity(getResources().getString(R.string.most_watched),
-                                getResources().getString(R.string.video),APIConstent.MOST_WATCHED_URL_PARAM,
+                                getResources().getString(R.string.video), APIConstant.MOST_WATCHED_URL_PARAM,
                                 SharedPrefUtil.MOST_WATCHED_JSON_RESPONSE);
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
                     case R.id.nav_new_video_id:
                         navRequest.startNavItemActivity(getResources().getString(R.string.new_video),
-                                getResources().getString(R.string.video),APIConstent.NEW_ARIVAL_URL_PARAM,
+                                getResources().getString(R.string.video), APIConstant.NEW_ARIVAL_URL_PARAM,
                                 SharedPrefUtil.NEW_ARIVAL_JSON_RESPONSE);
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
                     case R.id.nav_indian_video_id:
                         navRequest.startNavItemActivity(getResources().getString(R.string.hindi_and_punjabi),
-                                getResources().getString(R.string.video),APIConstent.HINDI_PUNJABI_URL_PARAM,
+                                getResources().getString(R.string.video), APIConstant.HINDI_PUNJABI_URL_PARAM,
                                 SharedPrefUtil.HINDI_PUNJABI_JSON_RESPONSE);
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
                     case R.id.nav_englishi_video_id:
                         navRequest.startNavItemActivity(getResources().getString(R.string.english_video),
-                                getResources().getString(R.string.video),APIConstent.ENGLISH_URL_PARAM,
+                                getResources().getString(R.string.video), APIConstant.ENGLISH_URL_PARAM,
                                 SharedPrefUtil.ENGLISH_JSON_RESPONSE);
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
@@ -195,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... param) {
             String response="";
             if (param.length > 0 && param != null && !TextUtils.isEmpty(param[0]) && param[0] != null) {
-               response = APIConstent.connectToServerWithURL(param[0]);
+               response = APIConstant.connectToServerWithURL(param[0]);
             }
             return response;
         }
@@ -206,11 +209,11 @@ public class MainActivity extends AppCompatActivity {
             if (result != null && !TextUtils.isEmpty(result)) {
                 try {
                     JSONObject contentTypeObject = new JSONObject(result);
-                    JSONArray contentTypeJsonArray = contentTypeObject.getJSONArray(APIConstent.CONTENT_TYPE_KEY);
+                    JSONArray contentTypeJsonArray = contentTypeObject.getJSONArray(APIConstant.CONTENT_TYPE_KEY);
                     for (int i = 0; i < contentTypeJsonArray.length(); i++) {
                         JSONObject object = contentTypeJsonArray.getJSONObject(i);
-                        contentTypeList.add(object.getString(APIConstent.CONTENT_TYPE_KEY));
-                        contentTypeImgList.add(object.getString(APIConstent.IMAGEURL));
+                        contentTypeList.add(object.getString(APIConstant.CONTENT_TYPE_KEY));
+                        contentTypeImgList.add(object.getString(APIConstant.IMAGEURL));
                     }
 
                 } catch (Exception e) {
