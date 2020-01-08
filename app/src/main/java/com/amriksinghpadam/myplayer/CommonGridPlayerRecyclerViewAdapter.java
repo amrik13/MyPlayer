@@ -29,19 +29,24 @@ public class CommonGridPlayerRecyclerViewAdapter extends RecyclerView.Adapter<Co
     private ArrayList singleIdList = new ArrayList();
     private ArrayList singerNameList = new ArrayList();
     private ArrayList descriptionList = new ArrayList();
-    private ArrayList songURLList = new ArrayList();
+    private ArrayList contentURLList = new ArrayList();
+    private ArrayList artistIdList = new ArrayList();
     private int selectionCode;
+    private String type;
     private RelativeLayout progressBarLayout;
 
     public CommonGridPlayerRecyclerViewAdapter(Context context, ArrayList bList, ArrayList tList,ArrayList singleIdList,
-                                               ArrayList singerNameList,ArrayList descriptionList, ArrayList songURLList) {
+                           ArrayList singerNameList,ArrayList descriptionList, ArrayList contentURLList
+            ,ArrayList artistIdList,String type) {
         this.context = context;
         bannerList.addAll(bList);
         titleList.addAll(tList);
+        this.type = type;
         this.singleIdList.addAll(singleIdList);
         this.singerNameList.addAll(singerNameList);
         this.descriptionList.addAll(descriptionList);
-        this.songURLList.addAll(songURLList);
+        this.contentURLList.addAll(contentURLList);
+        this.artistIdList.addAll(artistIdList);
     }
 
     public void setProgressBar(RelativeLayout progressBarLayout, int selectionCode) {
@@ -76,7 +81,7 @@ public class CommonGridPlayerRecyclerViewAdapter extends RecyclerView.Adapter<Co
                             Intent intent = new Intent(context, CommonPlayerGridView.class);
                             Bundle bundle = new Bundle();
                             bundle.putString(APIConstant.TITLE, titleList.get(position).toString());
-                            bundle.putString(APIConstant.TYPE, APIConstant.SONG);
+                            bundle.putString(APIConstant.TYPE, type);
                             intent.putExtras(bundle);
                             String filterSongReqURL = "";
                             String sharedPrefKey = "";
@@ -103,10 +108,18 @@ public class CommonGridPlayerRecyclerViewAdapter extends RecyclerView.Adapter<Co
                         APIConstant.IS_FIRST_TIME_FROM_SIDENAV = false;
                         Intent intent = new Intent(context, VideoExoPlayer.class);
                         Bundle bundle = new Bundle();
+                        bundle.putString(APIConstant.TYPE, type);
+                        bundle.putString(APIConstant.ARTIST_ID, artistIdList.size()>0 ? artistIdList.get(position).toString():"");
                         bundle.putString(APIConstant.TITLE, titleList.size()>0 ? titleList.get(position).toString():"");
-                        bundle.putString(APIConstant.SINGER_NAME, singerNameList.size()>0 ? singerNameList.get(position).toString():"");
-                        bundle.putString(APIConstant.SONG_DESCRIPTION,descriptionList.size()>0 ? descriptionList.get(position).toString():"");
-                        bundle.putString(APIConstant.SONG_URL,songURLList.size()>0 ? songURLList.get(position).toString():"");
+                        bundle.putString(APIConstant.SINGER_NAME, singerNameList.size() > 0 ? singerNameList.get(position).toString() : "");
+                        if(type.equals(APIConstant.SONG)) {
+                            bundle.putString(APIConstant.SONG_DESCRIPTION, descriptionList.size() > 0 ? descriptionList.get(position).toString() : "");
+                            bundle.putString(APIConstant.SONG_URL, contentURLList.size() > 0 ? contentURLList.get(position).toString() : "");
+                        }
+                        if (type.equals(APIConstant.VIDEO)){
+                            bundle.putString(APIConstant.VIDEO_DESCRIPTION, descriptionList.size() > 0 ? descriptionList.get(position).toString() : "");
+                            bundle.putString(APIConstant.VIDEO_URL, contentURLList.size() > 0 ? contentURLList.get(position).toString() : "");
+                        }
                         intent.putExtras(bundle);
                         context.startActivity(intent);
                         tempCount++;

@@ -24,13 +24,14 @@ public class CommonPlayerGridView extends AppCompatActivity {
     private ArrayList singerNameList = new ArrayList();
     private ArrayList discriptionList = new ArrayList();
     private ArrayList songURLList = new ArrayList();
-
+    private ArrayList artistIdList = new ArrayList();
     private ArrayList singleIdList = new ArrayList();
     private RecyclerView commonRecyclerView;
     private CommonGridPlayerRecyclerViewAdapter adapter;
     private RelativeLayout nodataImageLayout;
     private RelativeLayout progressBarLayout;
     private int selectionCode;
+    private String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,7 @@ public class CommonPlayerGridView extends AppCompatActivity {
         toolbar = findViewById(R.id.gridplayerid);
         setSupportActionBar(toolbar);
         Bundle bundle = getIntent().getExtras();
-        String type = bundle.getString(APIConstant.TYPE);
+        type = bundle.getString(APIConstant.TYPE);
         String pageTitle = bundle.getString(APIConstant.TITLE);
         //Toast.makeText(this, title, Toast.LENGTH_SHORT).show();
         getSupportActionBar().setTitle(pageTitle);
@@ -60,6 +61,7 @@ public class CommonPlayerGridView extends AppCompatActivity {
                         JSONObject obj = artistArrayList.get(i);
                         bannerList.add(obj.getString("songbannerurl"));
                         tittleList.add(obj.getString("songtitle"));
+                        artistIdList.add(obj.getString("artistid"));
                         singerNameList.add(obj.getString("artistname"));
                         discriptionList.add(obj.getString("songdescription"));
                         songURLList.add(obj.getString("songurl"));
@@ -77,6 +79,7 @@ public class CommonPlayerGridView extends AppCompatActivity {
                         JSONObject obj = discoverArrayList.get(i);
                         bannerList.add(obj.getString("songbannerurl"));
                         tittleList.add(obj.getString("songtitle"));
+                        artistIdList.add(obj.getString("artistid"));
                         singerNameList.add(obj.getString("artistname"));
                         discriptionList.add(obj.getString("songdescription"));
                         songURLList.add(obj.getString("songurl"));
@@ -96,6 +99,7 @@ public class CommonPlayerGridView extends AppCompatActivity {
                             JSONObject obj = arrayList.get(i);
                             bannerList.add(obj.getString(APIConstant.IMAGEURL));
                             tittleList.add(obj.getString("artistname"));
+                            artistIdList.add(obj.getString("artistid"));
                             singleIdList.add(obj.getString("artistid"));
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -106,8 +110,13 @@ public class CommonPlayerGridView extends AppCompatActivity {
                     for (int i=0;i<arrayList.size();i++){
                         try {
                             JSONObject obj = arrayList.get(i);
+                            singleIdList.add(obj.getString("artistid"));
                             bannerList.add(obj.getString("songbannerurl"));
                             tittleList.add(obj.getString("songtitle"));
+                            artistIdList.add(obj.getString("artistid"));
+                            singerNameList.add(obj.getString("artistname"));
+                            discriptionList.add(obj.getString("songdescription"));
+                            songURLList.add(obj.getString("songurl"));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -121,28 +130,37 @@ public class CommonPlayerGridView extends AppCompatActivity {
                             bannerList.add(obj.getString(APIConstant.IMAGEURL));
                             tittleList.add(obj.getString("language").toUpperCase());
                             singleIdList.add(obj.getString("languageid"));
+                            artistIdList.add(obj.getString("artistid"));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                 }else if(pageTitle.equals(getResources().getString(R.string.new_video))){
+                    APIConstant.IS_FIRST_TIME_FROM_SIDENAV = false;
                     ArrayList<JSONObject> arrayList = SharedPrefUtil.getSideNavNewArivalJsonResponse(getApplicationContext(),nodataImageLayout);
                     for (int i=0;i<arrayList.size();i++){
                         try {
                             JSONObject obj = arrayList.get(i);
                             bannerList.add(obj.getString("videobannerurl"));
                             tittleList.add(obj.getString("videotitle"));
+                            singerNameList.add(obj.getString("artistname"));
+                            discriptionList.add(obj.getString("videodescription"));
+                            songURLList.add(obj.getString("videourl"));
+                            artistIdList.add(obj.getString("artistid"));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                 }else if(pageTitle.equals(getResources().getString(R.string.most_watched))){
+                    APIConstant.IS_FIRST_TIME_FROM_SIDENAV = false;
 
                 }else if(pageTitle.equals(getResources().getString(R.string.hindi_and_punjabi))){
+                    APIConstant.IS_FIRST_TIME_FROM_SIDENAV = false;
                     ArrayList<JSONObject> arrayList = SharedPrefUtil.getSideNavHindiPunjabiJsonResponse(getApplicationContext(),nodataImageLayout);
                     for (int i=0;i<arrayList.size();i++){
                         try {
                             JSONObject obj = arrayList.get(i);
+                            artistIdList.add(obj.getString("artistid"));
                             bannerList.add(obj.getString("videobannerurl"));
                             tittleList.add(obj.getString("videotitle"));
                         } catch (Exception e) {
@@ -150,10 +168,12 @@ public class CommonPlayerGridView extends AppCompatActivity {
                         }
                     }
                 }else if(pageTitle.equals(getResources().getString(R.string.english_video))){
+                    APIConstant.IS_FIRST_TIME_FROM_SIDENAV = false;
                     ArrayList<JSONObject> arrayList = SharedPrefUtil.getSideNavEnglishJsonResponse(getApplicationContext(),nodataImageLayout);
                     for (int i=0;i<arrayList.size();i++){
                         try {
                             JSONObject obj = arrayList.get(i);
+                            artistIdList.add(obj.getString("artistid"));
                             bannerList.add(obj.getString("videobannerurl"));
                             tittleList.add(obj.getString("videotitle"));
                         } catch (Exception e) {
@@ -168,7 +188,8 @@ public class CommonPlayerGridView extends AppCompatActivity {
 
         GridLayoutManager layoutManager = new GridLayoutManager(this,3, LinearLayoutManager.VERTICAL,false);
         commonRecyclerView.setLayoutManager(layoutManager);
-        adapter = new CommonGridPlayerRecyclerViewAdapter(this,bannerList,tittleList,singleIdList,singerNameList,discriptionList,songURLList);
+        adapter = new CommonGridPlayerRecyclerViewAdapter(this,bannerList,tittleList,
+                singleIdList,singerNameList,discriptionList,songURLList,artistIdList,type);
         adapter.setProgressBar(progressBarLayout,selectionCode);
         commonRecyclerView.setAdapter(adapter);
 

@@ -40,6 +40,10 @@ public class SongFragment extends Fragment {
     private ArrayList discoverImageArrayList = new ArrayList();
     private ArrayList discoverTitleArrayList = new ArrayList();
     private ArrayList discoverIdArrayList = new ArrayList();
+    private ArrayList singerNameList = new ArrayList();
+    private ArrayList descriptionList = new ArrayList();
+    private ArrayList songURLList = new ArrayList();
+    private ArrayList artistIdList = new ArrayList();
     PlayerLayoutAdapter playerLayoutAdapter,playerLayoutAdapter2,playerLayoutAdapter3;
     private ImageView topImgLayout1,topImgLayout2,topImgLayout3,topImgLayout4;
     private ArrayList topImgURLList = new ArrayList();
@@ -47,6 +51,7 @@ public class SongFragment extends Fragment {
     private ArrayList autoCarouselTitleURLList = new ArrayList();
     private int tempCount = 0;
     private RelativeLayout progressBarLayout;
+    private String type;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -103,6 +108,7 @@ public class SongFragment extends Fragment {
                 artistImageArrayList.add(obj.getString(APIConstant.IMAGEURL));
                 artistTitleArrayList.add(obj.getString("artistname"));
                 artistIdArrayList.add(obj.getString("artistid"));
+                artistIdList.add(obj.getString("artistid"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -114,6 +120,10 @@ public class SongFragment extends Fragment {
                 JSONObject obj = latestArrayList.get(i);
                 latestImageArrayList.add(obj.getString("songbannerurl"));
                 latestTitleArrayList.add(obj.getString("songtitle"));
+                singerNameList.add(obj.getString("artistname"));
+                descriptionList.add(obj.getString("songdescription"));
+                songURLList.add(obj.getString("songurl"));
+                artistIdList.add(obj.getString("artistid"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -126,6 +136,7 @@ public class SongFragment extends Fragment {
                 discoverImageArrayList.add(obj.getString(APIConstant.IMAGEURL));
                 discoverTitleArrayList.add(obj.getString("language").toUpperCase());
                 discoverIdArrayList.add(obj.getString("languageid"));
+                artistIdList.add(obj.getString("artistid"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -137,15 +148,16 @@ public class SongFragment extends Fragment {
         }else{
             showToast("oops! unable to load images.");
         }
-        final String type_song = getResources().getString(R.string.song);
+        type = getResources().getString(R.string.song);
         moreFeature.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(tempCount == 0) {
+                    APIConstant.IS_FIRST_TIME_FROM_SIDENAV = true;
                     Intent intent = new Intent(getContext(), CommonPlayerGridView.class);
                     Bundle bundle = new Bundle();
                     bundle.putString(APIConstant.TITLE, getResources().getString(R.string.artist_title));
-                    bundle.putString(APIConstant.TYPE,type_song);
+                    bundle.putString(APIConstant.TYPE,type);
                     intent.putExtras(bundle);
                     getContext().startActivity(intent);
                     tempCount++;
@@ -159,7 +171,7 @@ public class SongFragment extends Fragment {
                     Intent intent = new Intent(getContext(),CommonPlayerGridView.class);
                     Bundle bundle = new Bundle();
                     bundle.putString(APIConstant.TITLE,getResources().getString(R.string.latest_song));
-                    bundle.putString(APIConstant.TYPE,type_song);
+                    bundle.putString(APIConstant.TYPE,type);
                     intent.putExtras(bundle);
                     startActivity(intent);
                     tempCount++;
@@ -170,10 +182,11 @@ public class SongFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(tempCount == 0) {
+                    APIConstant.IS_FIRST_TIME_FROM_SIDENAV = true;
                     Intent intent = new Intent(getContext(), CommonPlayerGridView.class);
                     Bundle bundle = new Bundle();
                     bundle.putString(APIConstant.TITLE,getResources().getString(R.string.discover));
-                    bundle.putString(APIConstant.TYPE,type_song);
+                    bundle.putString(APIConstant.TYPE,type);
                     intent.putExtras(bundle);
                     startActivity(intent);
                     tempCount++;
@@ -195,22 +208,22 @@ public class SongFragment extends Fragment {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(layoutManager);
-        playerLayoutAdapter = new PlayerLayoutAdapter(getContext(),artistImageArrayList,
-                artistTitleArrayList,artistIdArrayList,false);
+        playerLayoutAdapter = new PlayerLayoutAdapter(type,getContext(),artistImageArrayList,
+                artistTitleArrayList,artistIdArrayList,artistIdList,false,null,null,null);
         playerLayoutAdapter.setProgressBar(progressBarLayout, APIConstant.ARTIST_CODE);
         recyclerView.setAdapter(playerLayoutAdapter);
 
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
         recyclerView2.setLayoutManager(layoutManager2);
-        playerLayoutAdapter2 = new PlayerLayoutAdapter(getContext(),latestImageArrayList,
-                latestTitleArrayList,null,true);
+        playerLayoutAdapter2 = new PlayerLayoutAdapter(type,getContext(),latestImageArrayList,
+                latestTitleArrayList,null,artistIdList,true,singerNameList,descriptionList,songURLList);
         playerLayoutAdapter2.setProgressBar(progressBarLayout, APIConstant.LATEST_SONG_CODE);
         recyclerView2.setAdapter(playerLayoutAdapter2);
 
         LinearLayoutManager layoutManager3 = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
         recyclerView3.setLayoutManager(layoutManager3);
-        playerLayoutAdapter3 = new PlayerLayoutAdapter(getContext(),discoverImageArrayList,
-                discoverTitleArrayList,discoverIdArrayList,false);
+        playerLayoutAdapter3 = new PlayerLayoutAdapter(type,getContext(),discoverImageArrayList,
+                discoverTitleArrayList,discoverIdArrayList,artistIdList,false,null,null,null);
         playerLayoutAdapter3.setProgressBar(progressBarLayout, APIConstant.DISCOVER_SONG_CODE);
         recyclerView3.setAdapter(playerLayoutAdapter3);
 

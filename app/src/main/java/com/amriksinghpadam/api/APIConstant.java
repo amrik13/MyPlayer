@@ -53,9 +53,14 @@ public class APIConstant {
     final public static String CAROUSEL = "carousel";
     final public static String SONG_DESCRIPTION = "songdescription";
     final public static String SONG_URL = "songurl";
+    final public static String VIDEO_DESCRIPTION = "videodescription";
+    final public static String VIDEO_URL = "videourl";
     final public static String SINGER_NAME = "singername";
 
     //Media Pager View Selectiong Key
+    final public static String URL = "url";
+    final public static String ARTIST_ID = "artistid";
+    final public static String DESCRIPTION = "description";
     final public static String SECTION = "section";
     final public static int ARTIST_CODE = 1;
     final public static int LATEST_SONG_CODE = 2;

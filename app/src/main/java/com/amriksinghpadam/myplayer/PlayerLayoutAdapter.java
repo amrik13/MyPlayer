@@ -25,18 +25,29 @@ public class PlayerLayoutAdapter extends RecyclerView.Adapter<PlayerLayoutAdapte
     public static int tempCount = 0;
     private Context context;
     private ArrayList imageList = new ArrayList();
-    private ArrayList textList = new ArrayList();
+    private ArrayList titleList = new ArrayList();
     private ArrayList singleIdList = new ArrayList();
+    private ArrayList singerNameList = new ArrayList();
+    private ArrayList descriptionList = new ArrayList();
+    private ArrayList songURLList = new ArrayList();
+    private ArrayList artistIdList = new ArrayList();
     private boolean isAllowToPlayer;
     private RelativeLayout progressBarLayout;
     private int selectionCode;
+    private String type;
 
-    PlayerLayoutAdapter(Context context, ArrayList imageList, ArrayList textList, ArrayList singleIdList, boolean isAllowToPlayer) {
+    PlayerLayoutAdapter(String type,Context context, ArrayList imageList, ArrayList titleList, ArrayList singleIdList,
+                        ArrayList artistIdList,boolean isAllowToPlayer, ArrayList singerNameList, ArrayList descriptionList, ArrayList songURLList) {
         this.context = context;
+        this.type = type;
         this.imageList.addAll(imageList);
-        this.textList.addAll(textList);
+        this.titleList.addAll(titleList);
         this.isAllowToPlayer = isAllowToPlayer;
         if(singleIdList!=null) this.singleIdList.addAll(singleIdList);
+        if(singerNameList!=null) this.singerNameList.addAll(singerNameList);
+        if(descriptionList!=null) this.descriptionList.addAll(descriptionList);
+        if(songURLList!=null) this.songURLList.addAll(songURLList);
+        if(artistIdList!=null) this.artistIdList.addAll(artistIdList);
     }
 
     @NonNull
@@ -77,7 +88,7 @@ public class PlayerLayoutAdapter extends RecyclerView.Adapter<PlayerLayoutAdapte
         public void bindView(final int position) {
             //Glide.with(context).asBitmap().load(imageList.get(position)).load(imageView);
             Glide.with(context).load(imageList.get(position)).into(imageView);
-            textView.setText(textList.get(position).toString());
+            textView.setText(titleList.get(position).toString());
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -86,7 +97,12 @@ public class PlayerLayoutAdapter extends RecyclerView.Adapter<PlayerLayoutAdapte
                             APIConstant.SELECTED_SONG_SECTION = APIConstant.LATEST_SONG_CODE;
                             Intent intent = new Intent(context, VideoExoPlayer.class);
                             Bundle bundle = new Bundle();
-                            bundle.putString(APIConstant.TITLE, textList.get(position).toString());
+                            bundle.putString(APIConstant.TYPE, type);
+                            bundle.putString(APIConstant.ARTIST_ID, artistIdList.size()>0 ? artistIdList.get(position).toString():"");
+                            bundle.putString(APIConstant.TITLE, titleList.size()>0 ? titleList.get(position).toString():"");
+                            bundle.putString(APIConstant.SINGER_NAME, singerNameList.size()>0 ? singerNameList.get(position).toString():"");
+                            bundle.putString(APIConstant.SONG_DESCRIPTION,descriptionList.size()>0 ? descriptionList.get(position).toString():"");
+                            bundle.putString(APIConstant.SONG_URL,songURLList.size()>0 ? songURLList.get(position).toString():"");
                             intent.putExtras(bundle);
                             context.startActivity(intent);
                         } else {
@@ -96,8 +112,8 @@ public class PlayerLayoutAdapter extends RecyclerView.Adapter<PlayerLayoutAdapte
                             APIConstant.IS_FIRST_TIME_FROM_SIDENAV=false;
                             Intent intent = new Intent(context, CommonPlayerGridView.class);
                             Bundle bundle = new Bundle();
-                            bundle.putString(APIConstant.TITLE, textList.get(position).toString());
-                            bundle.putString(APIConstant.TYPE, APIConstant.SONG);
+                            bundle.putString(APIConstant.TITLE, titleList.get(position).toString());
+                            bundle.putString(APIConstant.TYPE, type);
                             intent.putExtras(bundle);
                             String filterSongReqURL = "";
                             String sharedPrefKey = "";

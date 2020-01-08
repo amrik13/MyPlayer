@@ -16,8 +16,8 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/videoItemImageId"
-            android:scaleType="centerCrop"
+            android:id="@+id/contentItemImageId"
+            android:scaleType="fitXY"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_alignParentLeft="true"
@@ -25,7 +25,7 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/singerNameId"
+        android:id="@+id/contentNameId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Singer Name"
@@ -36,7 +36,7 @@
         android:layout_marginLeft="10dp"/>
 
     <TextView
-        android:id="@+id/videoCountId"
+        android:id="@+id/countId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="21"

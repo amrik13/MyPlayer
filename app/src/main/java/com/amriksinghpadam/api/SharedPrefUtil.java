@@ -28,6 +28,7 @@ public class SharedPrefUtil {
     final public static String TOP_AUTO_CAROUSEL_JSON_RESPONSE = "topautocarouseljsonresponse";
     final public static String SONG_BY_ARTIST_JSON_RESPONSE =  "songbyartistjsonresponse";
     final public static String SONG_BY_LANGUAGE_JSON_RESPONSE =  "songbylanguagejsonresponse";
+    final public static String RELATED_SONG_JSON_RESPONSE =  "relatedSongjsonresponse";
 
     public static void setSideNavItemJsonResponse(Context mContext, String responseJson,String sharedPrefKey){
         APIConstant.IS_SHARED_PREF_SAVED = false;
@@ -251,10 +252,10 @@ public class SharedPrefUtil {
                         artistFilterSongResponseList.add(jsonArray.getJSONObject(i));
                     }
                 }else{
-                    nodataImageLayout.setVisibility(View.VISIBLE);
+                    if(nodataImageLayout!=null) nodataImageLayout.setVisibility(View.VISIBLE);
                 }
             } catch (Exception e) {
-                nodataImageLayout.setVisibility(View.VISIBLE);
+                if(nodataImageLayout!=null) nodataImageLayout.setVisibility(View.VISIBLE);
                 e.printStackTrace();
             }
         }
@@ -273,13 +274,36 @@ public class SharedPrefUtil {
                         discoverFilterSongResponseList.add(jsonArray.getJSONObject(i));
                     }
                 }else{
-                    nodataImageLayout.setVisibility(View.VISIBLE);
+                    if(nodataImageLayout!=null) nodataImageLayout.setVisibility(View.VISIBLE);
                 }
             } catch (Exception e) {
-                nodataImageLayout.setVisibility(View.VISIBLE);
+                if(nodataImageLayout!=null) nodataImageLayout.setVisibility(View.VISIBLE);
                 e.printStackTrace();
             }
         }
         return discoverFilterSongResponseList;
+    }
+// Get Related Song list for exoplayer view
+    public static ArrayList<JSONObject> getRelatedArtistSongJsonResponse(Context mContext,RelativeLayout nodataImageLayout){
+        ArrayList<JSONObject> artistFilterSongResponseList = new ArrayList<>();
+        SharedPreferences sharedPref = mContext.getSharedPreferences(MYPLAYER_SHARED_PREF,Context.MODE_PRIVATE);
+        String artistFilterSongJsonResponse = sharedPref.getString(RELATED_SONG_JSON_RESPONSE,"");
+        if(artistFilterSongJsonResponse!=null && !TextUtils.isEmpty(artistFilterSongJsonResponse)) {
+            try {
+                JSONObject jsonObject = new JSONObject(artistFilterSongJsonResponse);
+                JSONArray jsonArray = jsonObject.getJSONArray(APIConstant.ARTIST_SONG);
+                if(jsonArray!=null && jsonArray.length()>0){
+                    for(int i=0;i<jsonArray.length();i++){
+                        artistFilterSongResponseList.add(jsonArray.getJSONObject(i));
+                    }
+                }else{
+                    if(nodataImageLayout!=null) nodataImageLayout.setVisibility(View.VISIBLE);
+                }
+            } catch (Exception e) {
+                if(nodataImageLayout!=null) nodataImageLayout.setVisibility(View.VISIBLE);
+                e.printStackTrace();
+            }
+        }
+        return artistFilterSongResponseList;
     }
 }

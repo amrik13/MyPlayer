@@ -47,11 +47,11 @@
                 <data
                     android:scheme="http"
                     android:host="www.amriksinghpadam.com"
-                    android:pathPrefix="/main"/>
+                    android:pathPrefix="/MyPlayer"/>
                 <data
                     android:scheme="https"
                     android:host="www.amriksinghpadam.com"
-                    android:pathPrefix="/main"/>
+                    android:pathPrefix="/MyPlayer"/>
 
             </intent-filter>
         </activity>

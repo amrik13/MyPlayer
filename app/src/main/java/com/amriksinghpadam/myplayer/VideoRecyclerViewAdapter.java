@@ -51,9 +51,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
         //Glide.with(context).asBitmap().load(singerImageArrayList.get(position)).load(holder.singerImage);
         holder.singerImage.setImageDrawable((BitmapDrawable) singerImageArrayList.get(position));
         holder.singerName.setText(singerNameArrayList.get(position).toString());
-        if (videoCountArrayList.size() != 0) {
-            holder.videoCount.setText(videoCountArrayList.get(position).toString());
-        }
+
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,14 +68,13 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
 
     class SingerListAdapterVH extends RecyclerView.ViewHolder {
         ImageView singerImage;
-        TextView singerName, videoCount;
+        TextView singerName;
         RelativeLayout layout;
 
         public SingerListAdapterVH(@NonNull View itemView) {
             super(itemView);
-            singerImage = itemView.findViewById(R.id.videoItemImageId);
-            singerName = itemView.findViewById(R.id.singerNameId);
-            videoCount = itemView.findViewById(R.id.videoCountId);
+            singerImage = itemView.findViewById(R.id.contentItemImageId);
+            singerName = itemView.findViewById(R.id.contentNameId);
             layout = itemView.findViewById(itemView.getId());
         }
 

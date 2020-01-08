@@ -17,25 +17,30 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.amriksinghpadam.api.APIConstant;
 import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 public class RelatedViewAdapter extends RecyclerView.Adapter<RelatedViewAdapter.SingerListAdapterVH1> {
 
     private Context context;
-    private ArrayList singerImageArrayList = new ArrayList();
-    private ArrayList singerNameArrayList = new ArrayList();
+    private ArrayList conentImgList = new ArrayList();
+    private ArrayList contentNameList = new ArrayList();
+    private ArrayList contentURLList = new ArrayList();
+    private ArrayList descriptionList = new ArrayList();
     private View view;
     private FragmentManager fm;
 
     public RelatedViewAdapter(
-            Context context,ArrayList singerImageArrayList,
-            ArrayList singerNameArrayList,FragmentManager fm) {
+            Context context,ArrayList conentImgList,
+            ArrayList contentNameList,ArrayList descriptionList, ArrayList contentURLList,FragmentManager fm) {
         this.fm = fm;
         this.context = context;
-        this.singerImageArrayList.addAll(singerImageArrayList);
-        this.singerNameArrayList.addAll(singerNameArrayList);
-
+        this.conentImgList.addAll(conentImgList);
+        this.contentNameList.addAll(contentNameList);
+        this.contentURLList.addAll(contentURLList);
+        this.descriptionList.addAll(descriptionList);
     }
 
     @NonNull
@@ -52,10 +57,9 @@ public class RelatedViewAdapter extends RecyclerView.Adapter<RelatedViewAdapter.
     @Override
     public void onBindViewHolder(@NonNull final RelatedViewAdapter.SingerListAdapterVH1 holder, final int position) {
 
-        //Glide.with(context).asBitmap().load(singerImageArrayList.get(position)).load(holder.singerImage);
-        holder.singerImage.setImageDrawable((BitmapDrawable) singerImageArrayList.get(position));
-        holder.singerName.setText(singerNameArrayList.get(position).toString());
-
+        Glide.with(context).load(conentImgList.get(position)).into(holder.contentImgView);
+        //holder.singerImage.setImageDrawable((BitmapDrawable) singerImageArrayList.get(position));
+        holder.contentNameView.setText(contentNameList.get(position).toString());
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,21 +69,19 @@ public class RelatedViewAdapter extends RecyclerView.Adapter<RelatedViewAdapter.
         });
     }
     @Override
-    public int getItemCount() { return singerImageArrayList.size(); }
+    public int getItemCount() { return conentImgList.size(); }
 
     class SingerListAdapterVH1 extends RecyclerView.ViewHolder {
-        ImageView singerImage;
-        TextView singerName,videoCount;
+        ImageView contentImgView;
+        TextView contentNameView;
         RelativeLayout layout;
 
         public SingerListAdapterVH1(@NonNull View itemView) {
             super(itemView);
-            singerImage = itemView.findViewById(R.id.videoItemImageId);
-            singerName = itemView.findViewById(R.id.singerNameId);
-            videoCount = itemView.findViewById(R.id.videoCountId);
+            contentImgView = itemView.findViewById(R.id.contentItemImageId);
+            contentNameView = itemView.findViewById(R.id.contentNameId);
             layout = itemView.findViewById(R.id.singleItemId);
-            singerName.setTextColor(context.getResources().getColor(R.color.whiteColor));
-            videoCount.setText("");
+            contentNameView.setTextColor(context.getResources().getColor(R.color.whiteColor));
         }
 
         public void bind(int position){
@@ -93,7 +95,9 @@ public class RelatedViewAdapter extends RecyclerView.Adapter<RelatedViewAdapter.
             FragmentTransaction ft = fm.beginTransaction();
             ft.replace(R.id.exo_frag_layout_id,exoFrag);
             Bundle bundle = new Bundle();
-            bundle.putString("title",singerNameArrayList.get(position).toString());
+            bundle.putString(APIConstant.TITLE,contentNameList.get(position).toString());
+            bundle.putString(APIConstant.URL,contentURLList.get(position).toString());
+            bundle.putString(APIConstant.DESCRIPTION,descriptionList.get(position).toString());
             exoFrag.setArguments(bundle);
             ft.commit();
         }

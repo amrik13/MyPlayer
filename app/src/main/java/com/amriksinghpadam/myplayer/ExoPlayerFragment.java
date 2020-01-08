@@ -2,7 +2,11 @@ package com.amriksinghpadam.myplayer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,13 +16,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amriksinghpadam.api.APIConstant;
+import com.amriksinghpadam.api.SharedPrefUtil;
+import com.amriksinghpadam.api.SongAPIRequestWithFilter;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
@@ -34,7 +44,10 @@ import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.upstream.TransferListener;
 import com.google.android.exoplayer2.util.Util;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -43,11 +56,14 @@ public class ExoPlayerFragment extends Fragment {
     private PlayerView exoplayerView;
     private SimpleExoPlayer player;
     private ImageView shareBtnImg;
-    private TextView videoTitle,metaDescription,singerNameTextView;
-    private String vTitle,singerName,description,contentURL;
+    private ProgressBar progressBar;
+    private TextView videoTitle,metaDescription,singerNameTextView,relatedContentTextView;
+    private String vTitle,singerName,description,contentURL,type,artistId;
     private RecyclerView relatedContentRecyclerView;
     private ArrayList imageArrayList = new ArrayList();
-    private ArrayList nameArrayList = new ArrayList();
+    private ArrayList contentnameArrayList = new ArrayList();
+    private ArrayList contentURLList = new ArrayList();
+    private ArrayList descriptionList = new ArrayList();
     private FragmentManager fm;
 
     public ExoPlayerFragment(Context context,FragmentManager fm) {
@@ -66,19 +82,21 @@ public class ExoPlayerFragment extends Fragment {
         metaDescription = view.findViewById(R.id.metadataDescription);
         singerNameTextView = view.findViewById(R.id.metadataSingerNameId);
         relatedContentRecyclerView = view.findViewById(R.id.related_content_recyclerview_id);
-
+        relatedContentTextView = view.findViewById(R.id.related_content_text_id);
+        progressBar = view.findViewById(R.id.progressBar_id);
+        progressBar.setVisibility(View.GONE);
         initializePlayer();
         initRelatedRecyclerView();
         shareBtnImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String uri = "https://www.amriksinghpadam.com/main";
+                String uri = "https://www.amriksinghpadam.com/MyPlayer";
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_SUBJECT,"Your Video");
-                intent.putExtra(Intent.EXTRA_TEXT,"Hello, I am watching \""+vTitle+"\" Show on " +
+                intent.putExtra(Intent.EXTRA_TEXT,"Hello, I am watching \""+vTitle+"\" by \""+singerName+"\" on " +
                         "Myplayer App and " +"sharing to you. Please click on link below to " +
-                        "enjoy the episode on Myplayer app..\n"+uri);
+                        "watch on Myplayer app..\n"+uri);
                 Intent.createChooser(intent,"Share To");
                 startActivity(intent);
 //                ShareCompat.IntentBuilder.from(VideoExoPlayer.this)
@@ -93,45 +111,167 @@ public class ExoPlayerFragment extends Fragment {
 
     public void initializePlayer(){
         vTitle = getActivity().getIntent().getExtras().getString(APIConstant.TITLE);
-        description = getActivity().getIntent().getExtras().getString(APIConstant.SONG_DESCRIPTION);
+        type = getActivity().getIntent().getExtras().getString(APIConstant.TYPE);
+        artistId = getActivity().getIntent().getExtras().getString(APIConstant.ARTIST_ID);
         singerName = getActivity().getIntent().getExtras().getString(APIConstant.SINGER_NAME);
-        contentURL = getActivity().getIntent().getExtras().getString(APIConstant.SONG_URL);
+        relatedContentTextView.setText("Related " +type.substring(0, 1).toUpperCase()+type.substring(1)
+                +"s By "+singerName.substring(0, 1).toUpperCase()+singerName.substring(1)+":");
 
-        videoTitle.setText(TextUtils.isEmpty(vTitle)||vTitle==null?"Loading...":vTitle);
-        metaDescription.setText(TextUtils.isEmpty(description)||description==null?"Description: "+"Loading...":"Description: "+description);
-        singerNameTextView.setText(TextUtils.isEmpty(singerName)||singerName==null?"Singer: "+"Loading...":"Singer: "+singerName);
-        BandwidthMeter meter =new DefaultBandwidthMeter();
-        TrackSelection.Factory factory = new AdaptiveTrackSelection.Factory(meter);
-        TrackSelector trackSelector = new DefaultTrackSelector(factory);
-        player = ExoPlayerFactory.newSimpleInstance(context,trackSelector);
-        exoplayerView.setPlayer(player);
-        //PlaybackControlView controlView = new PlaybackControlView(this);
-        DataSource.Factory datasourcefactory = new DefaultDataSourceFactory(
-                context, Util.getUserAgent(context,"CloudinaryExoplaye"));
-        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-        Uri videoURL = Uri.parse(TextUtils.isEmpty(contentURL)||contentURL==null?"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
-                                    : contentURL);
-        MediaSource mediaSource = new ExtractorMediaSource(
-                videoURL, datasourcefactory, extractorsFactory, null,null);
-        player.prepare(mediaSource);
-        player.setPlayWhenReady(false);
+        if(type.equals(APIConstant.SONG)) {
+            description = getActivity().getIntent().getExtras().getString(APIConstant.SONG_DESCRIPTION);
+            contentURL = getActivity().getIntent().getExtras().getString(APIConstant.SONG_URL);
+            if(getArguments()!=null){
+                vTitle = getArguments().getString(APIConstant.TITLE);
+                contentURL = getArguments().getString(APIConstant.URL);
+                description = getArguments().getString(APIConstant.DESCRIPTION);
+            }
+            videoTitle.setText(TextUtils.isEmpty(vTitle) || vTitle == null ? "Loading..." : vTitle);
+            metaDescription.setText(TextUtils.isEmpty(description) || description == null ? "Description: " + "Loading..." : "Description: " + description);
+            singerNameTextView.setText(TextUtils.isEmpty(singerName) || singerName == null ? "Singer: " + "Loading..." : "Singer: " + singerName);
+
+//            BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+//            ExtractorsFactory factory = new DefaultExtractorsFactory();
+//            TrackSelection.Factory trackSelection = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+//            String userAgent = Util.getUserAgent(context,context.getPackageName());
+//            DataSource.Factory dataSource = new DefaultDataSourceFactory(context,userAgent);
+//            Uri uri = Uri.parse(TextUtils.isEmpty(contentURL) ? "www.musicper.com/tere-bin.mp" : contentURL);
+//            MediaSource mediaSource = new ExtractorMediaSource(uri,dataSource,factory,null,null);
+//            player = ExoPlayerFactory.newSimpleInstance(context,new DefaultTrackSelector(trackSelection));
+//            player.prepare(mediaSource);
+//            player.setPlayWhenReady(true);
+            BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+            final ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+            TrackSelection.Factory trackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+            DataSource.Factory dateSourceFactory = new DefaultDataSourceFactory(context, Util.getUserAgent(context, context.getPackageName()), (TransferListener<? super DataSource>) bandwidthMeter);
+            MediaSource mediaSource = new ExtractorMediaSource(Uri.parse(
+                    TextUtils.isEmpty(contentURL)?" ":contentURL
+            ), dateSourceFactory, extractorsFactory,null,null);
+            Log.d("SongURL",contentURL);
+            player = ExoPlayerFactory.newSimpleInstance(context, new DefaultTrackSelector(trackSelectionFactory));
+            exoplayerView.setPlayer(player);
+            player.prepare(mediaSource);
+
+        }
+        if (type.equals(APIConstant.VIDEO)) {
+            description = getActivity().getIntent().getExtras().getString(APIConstant.VIDEO_DESCRIPTION);
+            contentURL = getActivity().getIntent().getExtras().getString(APIConstant.VIDEO_URL);
+            videoTitle.setText(TextUtils.isEmpty(vTitle) || vTitle == null ? "Loading..." : vTitle);
+            metaDescription.setText(TextUtils.isEmpty(description) || description == null ? "Description: " + "Loading..." : "Description: " + description);
+            singerNameTextView.setText(TextUtils.isEmpty(singerName) || singerName == null ? "Singer: " + "Loading..." : "Singer: " + singerName);
+
+            BandwidthMeter meter =new DefaultBandwidthMeter();
+            TrackSelection.Factory factory = new AdaptiveTrackSelection.Factory(meter);
+            TrackSelector trackSelector = new DefaultTrackSelector(factory);
+            player = ExoPlayerFactory.newSimpleInstance(context,trackSelector);
+            exoplayerView.setPlayer(player);
+            //PlaybackControlView controlView = new PlaybackControlView(this);
+            DataSource.Factory datasourcefactory = new DefaultDataSourceFactory(
+                    context, Util.getUserAgent(context,"CloudinaryExoplaye"));
+            ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+            Uri videoURL = Uri.parse(TextUtils.isEmpty(contentURL)||contentURL==null?" "
+                    : contentURL);
+            Log.d("videoURL",contentURL);
+            MediaSource mediaSource = new ExtractorMediaSource(
+                    videoURL, datasourcefactory, extractorsFactory, null,null);
+            player.prepare(mediaSource);
+            player.setPlayWhenReady(false);
+        }
+
     }
 
     public void initRelatedRecyclerView(){
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-        relatedContentRecyclerView.setLayoutManager(layoutManager);
-        for (int i = 0; i < 8; i++) {
-            imageArrayList.add(getResources().getDrawable(R.drawable.image));
-            nameArrayList.add("Singer Name " + (i + 1));
+// check here for song and video type
+        APIConstant.CONNECTIVITY = false;
+        String sharedPrefKey = SharedPrefUtil.RELATED_SONG_JSON_RESPONSE;
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            Network network = connectivityManager.getActiveNetwork();
+            if (network != null) {
+                APIConstant.CONNECTIVITY = true;
+
+                String artistParam = APIConstant.FILTER_ARTIST_SONG_URL_PARAM.replace("$$artist$id$$",artistId);
+                new CallRelatedContentAPI(sharedPrefKey).execute(APIConstant.SSL_SCHEME+APIConstant.BASE_URL+
+                        artistParam);
+            }
+        } else {
+            NetworkInfo network = connectivityManager.getActiveNetworkInfo();
+            if (network != null) {
+
+                APIConstant.CONNECTIVITY = true;
+                String artistParam = APIConstant.FILTER_ARTIST_SONG_URL_PARAM.replace("$$artist$id$$",artistId);
+                new CallRelatedContentAPI(sharedPrefKey).execute(APIConstant.SSL_SCHEME+APIConstant.BASE_URL+
+                        artistParam);
+            }
         }
-        RelatedViewAdapter videoRecyclerViewAdapter = new RelatedViewAdapter(
-                context, imageArrayList, nameArrayList,fm);
-        relatedContentRecyclerView.setAdapter(videoRecyclerViewAdapter);
+        if (!APIConstant.CONNECTIVITY) {
+            showToast(context.getResources().getString(R.string.internet_error_msg));
+        }
+
     }
 
+    public void bindRelatedContentView(){
+        // check song or video type
+        ArrayList<JSONObject> artistArrayList = SharedPrefUtil.getRelatedArtistSongJsonResponse(context,null);
+        for (int i=0;i<artistArrayList.size();i++){
+            try {
+                JSONObject obj = artistArrayList.get(i);
+                imageArrayList.add(obj.getString("songbannerurl"));
+                contentnameArrayList.add(obj.getString("songtitle"));
+                contentURLList.add(obj.getString("songurl"));
+                descriptionList.add(obj.getString("songdescription"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        relatedContentRecyclerView.setLayoutManager(layoutManager);
+        RelatedViewAdapter videoRecyclerViewAdapter = new RelatedViewAdapter(
+                context, imageArrayList, contentnameArrayList,descriptionList,contentURLList,fm);
+        relatedContentRecyclerView.setAdapter(videoRecyclerViewAdapter);
+
+    }
+
+    class CallRelatedContentAPI extends AsyncTask<String,String,String>{
+        private String sharedPrefKey;
+        CallRelatedContentAPI(String sharedPrefKey){
+            this.sharedPrefKey = sharedPrefKey;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected String doInBackground(String... param) {
+            if (param != null && param[0] != null && !TextUtils.isEmpty(param[0])) {
+                String filterSongJsonResponse = APIConstant.connectToServerWithURL(param[0]);
+                return filterSongJsonResponse;
+            }
+            return "";
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            if(response!=null && !TextUtils.isEmpty(response)){
+                SharedPrefUtil.setFilterSongJsonResponse(context,response,sharedPrefKey);
+                bindRelatedContentView();
+                progressBar.setVisibility(View.GONE);
+            }else {
+                progressBar.setVisibility(View.GONE);
+                showToast(context.getResources().getString(R.string.empty_shared_pref_error_msg));
+            }
+        }
+    }
     @Override
     public void onPause() {
         super.onPause();
         player.stop();
+    }
+
+    public void showToast(String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
 }
