@@ -168,6 +168,7 @@ public class SongFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(tempCount == 0){
+                    APIConstant.IS_FIRST_TIME_FROM_SIDENAV = false;
                     Intent intent = new Intent(getContext(),CommonPlayerGridView.class);
                     Bundle bundle = new Bundle();
                     bundle.putString(APIConstant.TITLE,getResources().getString(R.string.latest_song));

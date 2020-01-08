@@ -82,7 +82,9 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (tempCount == 0) {
-                    //songAPIRequest.callMediaAPIRequest(2);
+                    String topImgapiURL = APIConstant.SSL_SCHEME + APIConstant.BASE_URL + APIConstant.TOP_IMAGE_URL_PARAM;
+                    songAPIRequest.callMediaAPIRequest(2, topImgapiURL);
+
                 }
             }
         });

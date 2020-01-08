@@ -18,6 +18,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amriksinghpadam.api.APIConstant;
+import com.amriksinghpadam.api.SharedPrefUtil;
+
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -32,6 +36,7 @@ public class VideoFragment extends Fragment {
     private CardView cardView;
     private TextView headingText;
     private RecyclerView videoListrecyclerView;
+    private ArrayList artistIdList = new ArrayList();
     private ArrayList singerImageArrayList = new ArrayList();
     private ArrayList singerNameArrayList = new ArrayList();
     private ArrayList videoCountArrayList = new ArrayList();
@@ -46,6 +51,7 @@ public class VideoFragment extends Fragment {
         cardView = view.findViewById(R.id.videoCardViewId);
         headingText = view.findViewById(R.id.headerHeadingId);
         videoListrecyclerView = view.findViewById(R.id.videoRecyclerViewId);
+
         model = new ArrayList<>();
         // adding image, title, desc in model object
         model.add(new VideoHeaderModel(R.drawable.a, "Most Watched", "Most Watched"));
@@ -87,15 +93,22 @@ public class VideoFragment extends Fragment {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         videoListrecyclerView.setLayoutManager(layoutManager);
+        // Get Artist Data
+        ArrayList<JSONObject> artistArrayList = SharedPrefUtil.getSideNavArtistJsonResponse(getContext(),null);
+        for (int i=0;i<artistArrayList.size();i++){
+            try {
+                JSONObject obj = artistArrayList.get(i);
+                singerImageArrayList.add(obj.getString(APIConstant.IMAGEURL));
+                singerNameArrayList.add(obj.getString("artistname"));
+                artistIdList.add(obj.getString("artistid"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         for (int i = 0; i < 8; i++) {
-            singerImageArrayList.add(getResources().getDrawable(R.drawable.image));
-            singerNameArrayList.add("Singer Name " + (i + 1));
             videoCountArrayList.add(String.valueOf(2 * (i + 1)));
         }
-        videoRecyclerViewAdapter = new VideoRecyclerViewAdapter(
-                getContext(), singerImageArrayList,
-                singerNameArrayList,
-                videoCountArrayList);
+        videoRecyclerViewAdapter = new VideoRecyclerViewAdapter(getContext(), singerImageArrayList,singerNameArrayList,videoCountArrayList);
         videoListrecyclerView.setAdapter(videoRecyclerViewAdapter);
         return view;
     }

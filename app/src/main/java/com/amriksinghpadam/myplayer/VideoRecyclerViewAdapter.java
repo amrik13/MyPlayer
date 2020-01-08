@@ -14,6 +14,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecyclerViewAdapter.SingerListAdapterVH> {
@@ -48,8 +50,8 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
     @Override
     public void onBindViewHolder(@NonNull final VideoRecyclerViewAdapter.SingerListAdapterVH holder, final int position) {
 
-        //Glide.with(context).asBitmap().load(singerImageArrayList.get(position)).load(holder.singerImage);
-        holder.singerImage.setImageDrawable((BitmapDrawable) singerImageArrayList.get(position));
+        Glide.with(context).load(singerImageArrayList.get(position)).load(holder.singerImage);
+        //holder.singerImage.setImageDrawable((BitmapDrawable) singerImageArrayList.get(position));
         holder.singerName.setText(singerNameArrayList.get(position).toString());
 
         holder.layout.setOnClickListener(new View.OnClickListener() {

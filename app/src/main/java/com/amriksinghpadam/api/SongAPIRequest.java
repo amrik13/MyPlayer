@@ -66,6 +66,23 @@ public class SongAPIRequest {
                 MainFragment.tempCount = 1;
                 APIConstant.CONNECTIVITY = true;
                 refreshIconLayout.setVisibility(View.GONE);
+                new MediaAPIAsyncTask().execute(topImageAPIURl);
+
+                NavigationItemRequest navRequest1 = new NavigationItemRequest(mContext,
+                        progressBarLayout, refreshIconLayout, null, null, false);
+                navRequest1.startNavItemActivity(mContext.getResources().getString(R.string.artist_title),
+                        mContext.getResources().getString(R.string.song), APIConstant.ARTIST_URL_PARAM,
+                        SharedPrefUtil.ARTIST_JSON_RESPONSE);
+                NavigationItemRequest navRequest2 = new NavigationItemRequest(mContext,
+                        progressBarLayout, refreshIconLayout, null, null, false);
+                navRequest2.startNavItemActivity(mContext.getResources().getString(R.string.latest_song),
+                        mContext.getResources().getString(R.string.song), APIConstant.LATEST_URL_PARAM,
+                        SharedPrefUtil.LATEST_JSON_RESPONSE);
+                NavigationItemRequest navRequest3 = new NavigationItemRequest(mContext,
+                        progressBarLayout, refreshIconLayout, null, null, false);
+                navRequest3.startNavItemActivity(mContext.getResources().getString(R.string.discover),
+                        mContext.getResources().getString(R.string.song), APIConstant.DISCOVER_URL_PARAM,
+                        SharedPrefUtil.DISCOVER_JSON_RESPONSE);
 
             }
         }
