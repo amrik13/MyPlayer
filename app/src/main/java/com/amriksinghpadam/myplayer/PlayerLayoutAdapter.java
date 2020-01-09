@@ -98,7 +98,9 @@ public class PlayerLayoutAdapter extends RecyclerView.Adapter<PlayerLayoutAdapte
                             Intent intent = new Intent(context, VideoExoPlayer.class);
                             Bundle bundle = new Bundle();
                             bundle.putString(APIConstant.TYPE, type);
-                            bundle.putString(APIConstant.ARTIST_ID, artistIdList.size()>0 ? artistIdList.get(position).toString():"");
+                            bundle.putString(APIConstant.ARTIST_ID,
+                                    artistIdList.size()>0 ? artistIdList.get(position).toString():
+                                            singleIdList.size()>0 ? singleIdList.get(position).toString():"");
                             bundle.putString(APIConstant.TITLE, titleList.size()>0 ? titleList.get(position).toString():"");
                             bundle.putString(APIConstant.SINGER_NAME, singerNameList.size()>0 ? singerNameList.get(position).toString():"");
                             bundle.putString(APIConstant.SONG_DESCRIPTION,descriptionList.size()>0 ? descriptionList.get(position).toString():"");

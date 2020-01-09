@@ -10,6 +10,11 @@
     <color name="green3">#427D7B</color>
     <color name="red4">#855149</color>
 
+    <color name="most_watch_back_color">#1E1B22</color>
+    <color name="new_video_back_color">#14b584</color>
+    <color name="hindi_punjabi_back_color">#790000</color>
+    <color name="english_video_back_color">#04DDDA</color>
+
     <color name="whiteColor">#fff</color>
     <color name="blackColor">#000</color>
 
