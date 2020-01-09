@@ -54,16 +54,16 @@ public class VideoFragment extends Fragment {
 
         model = new ArrayList<>();
         // adding image, title, desc in model object
-        model.add(new VideoHeaderModel(R.drawable.a, "Most Watched", "Most Watched"));
-        model.add(new VideoHeaderModel(R.drawable.b, "New Video", "New Video"));
-        model.add(new VideoHeaderModel(R.drawable.c, "Hindi & Punjabi", "Hindi & Punjabi"));
-        model.add(new VideoHeaderModel(R.drawable.d, "English Video", "English Video"));
+        model.add(new VideoHeaderModel(R.drawable.mostwatch, "Most Watched", "Most Watched"));
+        model.add(new VideoHeaderModel(R.drawable.newvid, "New Video", "New Video"));
+        model.add(new VideoHeaderModel(R.drawable.punjabi, "Hindi & Punjabi", "Hindi & Punjabi"));
+        model.add(new VideoHeaderModel(R.drawable.english, "English Video", "English Video"));
         //initializing colors for viewpager
         Integer[] temp_color = {
-                getResources().getColor(R.color.yellow1),
-                getResources().getColor(R.color.blue2),
-                getResources().getColor(R.color.green3),
-                getResources().getColor(R.color.red4),
+                getResources().getColor(R.color.most_watch_back_color),
+                getResources().getColor(R.color.new_video_back_color),
+                getResources().getColor(R.color.hindi_punjabi_back_color),
+                getResources().getColor(R.color.english_video_back_color),
         };
         color = temp_color;
         adapter = new VideoHeaderPagerAdapter(model, getContext());

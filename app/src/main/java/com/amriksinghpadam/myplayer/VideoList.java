@@ -62,16 +62,16 @@ public class VideoList extends AppCompatActivity {
 
                 switch (position) {
                     case 0:
-                        resImage = getResources().getDrawable(R.drawable.d);
+                        resImage = getResources().getDrawable(R.drawable.ic_back);
                         break;
                     case 1:
-                        resImage = getResources().getDrawable(R.drawable.c);
+                        resImage = getResources().getDrawable(R.drawable.ic_back);
                         break;
                     case 2:
-                        resImage = getResources().getDrawable(R.drawable.b);
+                        resImage = getResources().getDrawable(R.drawable.ic_back);
                         break;
                     case 3:
-                        resImage = getResources().getDrawable(R.drawable.a);
+                        resImage = getResources().getDrawable(R.drawable.ic_back);
                         break;
                     default:
                         resImage = getResources().getDrawable(R.drawable.punjabi);

@@ -108,7 +108,6 @@ public class SongFragment extends Fragment {
                 artistImageArrayList.add(obj.getString(APIConstant.IMAGEURL));
                 artistTitleArrayList.add(obj.getString("artistname"));
                 artistIdArrayList.add(obj.getString("artistid"));
-                artistIdList.add(obj.getString("artistid"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -136,7 +135,6 @@ public class SongFragment extends Fragment {
                 discoverImageArrayList.add(obj.getString(APIConstant.IMAGEURL));
                 discoverTitleArrayList.add(obj.getString("language").toUpperCase());
                 discoverIdArrayList.add(obj.getString("languageid"));
-                artistIdList.add(obj.getString("artistid"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
