@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +42,7 @@ public class VideoFragment extends Fragment {
     private ArrayList singerNameArrayList = new ArrayList();
     private ArrayList videoCountArrayList = new ArrayList();
     private VideoRecyclerViewAdapter videoRecyclerViewAdapter;
-
+    private RelativeLayout progressBarLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,6 +52,8 @@ public class VideoFragment extends Fragment {
         cardView = view.findViewById(R.id.videoCardViewId);
         headingText = view.findViewById(R.id.headerHeadingId);
         videoListrecyclerView = view.findViewById(R.id.videoRecyclerViewId);
+        progressBarLayout = view.findViewById(R.id.progressBar_layout_id);
+        progressBarLayout.setVisibility(View.GONE);
 
         model = new ArrayList<>();
         // adding image, title, desc in model object
@@ -66,7 +69,7 @@ public class VideoFragment extends Fragment {
                 getResources().getColor(R.color.english_video_back_color),
         };
         color = temp_color;
-        adapter = new VideoHeaderPagerAdapter(model, getContext());
+        adapter = new VideoHeaderPagerAdapter(model, getContext(),null,progressBarLayout);
         viewPager.setAdapter(adapter);
         viewPager.setPadding(110, 0, 110, 0);
         headingText.setText(model.get(0).getTitle());
@@ -108,7 +111,8 @@ public class VideoFragment extends Fragment {
         for (int i = 0; i < 8; i++) {
             videoCountArrayList.add(String.valueOf(2 * (i + 1)));
         }
-        videoRecyclerViewAdapter = new VideoRecyclerViewAdapter(getContext(), singerImageArrayList,singerNameArrayList,videoCountArrayList);
+        videoRecyclerViewAdapter = new VideoRecyclerViewAdapter(getContext(),singerImageArrayList,
+                singerNameArrayList,artistIdList,progressBarLayout);
         videoListrecyclerView.setAdapter(videoRecyclerViewAdapter);
         return view;
     }

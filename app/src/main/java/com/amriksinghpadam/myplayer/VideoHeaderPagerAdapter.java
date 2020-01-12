@@ -7,9 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
+
+import com.amriksinghpadam.api.APIConstant;
+import com.amriksinghpadam.api.NavigationItemRequest;
+import com.amriksinghpadam.api.SharedPrefUtil;
 
 import java.util.ArrayList;
 
@@ -18,10 +23,14 @@ public class VideoHeaderPagerAdapter extends PagerAdapter {
     Context context;
     int tempCount = 0;
     private LayoutInflater inflater;
+    private RelativeLayout refreshicon;
+    private RelativeLayout progressBarLayout;
 
-    public VideoHeaderPagerAdapter(ArrayList<VideoHeaderModel> models, Context context) {
+    public VideoHeaderPagerAdapter(ArrayList<VideoHeaderModel> models, Context context, RelativeLayout refreshicon, RelativeLayout progressBarLayout) {
         this.models.addAll(models);
         this.context = context;
+        this.refreshicon = refreshicon;
+        this.progressBarLayout = progressBarLayout;
     }
 
     @Override
@@ -46,17 +55,39 @@ public class VideoHeaderPagerAdapter extends PagerAdapter {
 
         final Intent intent = new Intent(context, CommonPlayerGridView.class);
         final Bundle bundle = new Bundle();
+        final NavigationItemRequest navRequest = new NavigationItemRequest(context,
+                progressBarLayout,refreshicon,intent,bundle,true);
 
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(context,models.get(position).getTitle(),Toast.LENGTH_SHORT).show();
+
                 if (tempCount == 0) {
-                    bundle.putString("title", models.get(position).getTitle());
-                    bundle.putString("type", "video");
-                    intent.putExtras(bundle);
-                    context.startActivity(intent);
-                    tempCount++;
+                    switch (position){
+                        case 0:
+                            navRequest.startNavItemActivity(context.getResources().getString(R.string.most_watched),
+                                    context.getResources().getString(R.string.video), APIConstant.MOST_WATCHED_URL_PARAM,
+                                    SharedPrefUtil.MOST_WATCHED_JSON_RESPONSE);
+                            break;
+                        case 1:
+                            navRequest.startNavItemActivity(context.getResources().getString(R.string.new_video),
+                                    context.getResources().getString(R.string.video), APIConstant.NEW_ARIVAL_URL_PARAM,
+                                    SharedPrefUtil.NEW_ARIVAL_JSON_RESPONSE);
+                            break;
+                        case 2:
+                            navRequest.startNavItemActivity(context.getResources().getString(R.string.hindi_and_punjabi),
+                                    context.getResources().getString(R.string.video), APIConstant.HINDI_PUNJABI_URL_PARAM,
+                                    SharedPrefUtil.HINDI_PUNJABI_JSON_RESPONSE);
+                            break;
+                        case 3:
+                            navRequest.startNavItemActivity(context.getResources().getString(R.string.english_video),
+                                    context.getResources().getString(R.string.video), APIConstant.ENGLISH_URL_PARAM,
+                                    SharedPrefUtil.ENGLISH_JSON_RESPONSE);
+                            break;
+                        default:
+                            break;
+
+                    }
                 }
 
             }

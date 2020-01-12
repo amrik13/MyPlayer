@@ -3,6 +3,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import org.json.JSONArray;
@@ -27,8 +28,10 @@ public class SharedPrefUtil {
     final public static String TOP_IMAGE_JSONRESPONSE = "topimagejsonresponse";
     final public static String TOP_AUTO_CAROUSEL_JSON_RESPONSE = "topautocarouseljsonresponse";
     final public static String SONG_BY_ARTIST_JSON_RESPONSE =  "songbyartistjsonresponse";
+    final public static String VIDEO_BY_ARTIST_JSON_RESPONSE =  "videobyartistjsonresponse";
     final public static String SONG_BY_LANGUAGE_JSON_RESPONSE =  "songbylanguagejsonresponse";
     final public static String RELATED_SONG_JSON_RESPONSE =  "relatedSongjsonresponse";
+    final public static String RELATED_VIDEO_JSON_RESPONSE =  "relatedSongjsonresponse";
 
     public static void setSideNavItemJsonResponse(Context mContext, String responseJson,String sharedPrefKey){
         APIConstant.IS_SHARED_PREF_SAVED = false;
@@ -306,4 +309,63 @@ public class SharedPrefUtil {
         }
         return artistFilterSongResponseList;
     }
+//Artist Video Response Pref
+    public static void setArtistVideoJsonResponse(Context mContext, String responseJson, String sharedPrefKey){
+        APIConstant.IS_SHARED_PREF_SAVED = false;
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(MYPLAYER_SHARED_PREF,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(sharedPrefKey,responseJson);
+        if(editor.commit())
+            APIConstant.IS_SHARED_PREF_SAVED = true;
+    }
+// Get Video list for Video Grid view
+    public static ArrayList<JSONObject> getFilterArtistVideoJsonResponse(Context mContext, RelativeLayout nodataImageLayout){
+        ArrayList<JSONObject> artistFilterVideoResponseList = new ArrayList<>();
+        SharedPreferences sharedPref = mContext.getSharedPreferences(MYPLAYER_SHARED_PREF,Context.MODE_PRIVATE);
+        String artistFilterVideoJsonResponse = sharedPref.getString(VIDEO_BY_ARTIST_JSON_RESPONSE,"");
+        if(artistFilterVideoJsonResponse!=null && !TextUtils.isEmpty(artistFilterVideoJsonResponse)) {
+            try {
+                JSONObject jsonObject = new JSONObject(artistFilterVideoJsonResponse);
+                JSONArray jsonArray = jsonObject.getJSONArray(APIConstant.ARTIST_VIDEO);
+                if(jsonArray!=null && jsonArray.length()>0){
+                    if(nodataImageLayout!=null) nodataImageLayout.setVisibility(View.GONE);
+                    for(int i=0;i<jsonArray.length();i++){
+                        artistFilterVideoResponseList.add(jsonArray.getJSONObject(i));
+                    }
+                }else{
+                    if(nodataImageLayout!=null) nodataImageLayout.setVisibility(View.VISIBLE);
+                }
+            } catch (Exception e) {
+                if(nodataImageLayout!=null) nodataImageLayout.setVisibility(View.VISIBLE);
+                e.printStackTrace();
+            }
+        }
+        return artistFilterVideoResponseList;
+    }
+// Get Video list for exoplayer related view
+    public static ArrayList<JSONObject> getRelatedArtistVideoJsonResponse(Context mContext, RelativeLayout nodataImageLayout){
+        ArrayList<JSONObject> artistFilterVideoResponseList = new ArrayList<>();
+        SharedPreferences sharedPref = mContext.getSharedPreferences(MYPLAYER_SHARED_PREF,Context.MODE_PRIVATE);
+        String artistFilterVideoJsonResponse = sharedPref.getString(RELATED_VIDEO_JSON_RESPONSE,"");
+        if(artistFilterVideoJsonResponse!=null && !TextUtils.isEmpty(artistFilterVideoJsonResponse)) {
+            try {
+                JSONObject jsonObject = new JSONObject(artistFilterVideoJsonResponse);
+                JSONArray jsonArray = jsonObject.getJSONArray(APIConstant.ARTIST_VIDEO);
+                if(jsonArray!=null && jsonArray.length()>0){
+                    if(nodataImageLayout!=null) nodataImageLayout.setVisibility(View.GONE);
+                    for(int i=0;i<jsonArray.length();i++){
+                        artistFilterVideoResponseList.add(jsonArray.getJSONObject(i));
+                    }
+                }else{
+                    if(nodataImageLayout!=null) nodataImageLayout.setVisibility(View.VISIBLE);
+                }
+            } catch (Exception e) {
+                if(nodataImageLayout!=null) nodataImageLayout.setVisibility(View.VISIBLE);
+                e.printStackTrace();
+            }
+        }
+        return artistFilterVideoResponseList;
+    }
+
+
 }

@@ -8,10 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.amriksinghpadam.api.APIConstant;
+import com.amriksinghpadam.api.SharedPrefUtil;
+import com.bumptech.glide.Glide;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -19,13 +26,17 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.Vide
 
     static int tempCount = 0;
     private Context context;
-    private ArrayList imageList = new ArrayList();
-    private ArrayList tittleList = new ArrayList();
+    private String selectedSingerName;
+    private ArrayList videoBannerList = new ArrayList();
+    private ArrayList videoTittleList = new ArrayList();
+    private ArrayList videoURLList = new ArrayList();
+    private ArrayList descriptionList = new ArrayList();
+    private int artistId;
 
-    public VideoListAdapter(Context context, ArrayList iList, ArrayList tList) {
+    public VideoListAdapter(Context context, ArrayList videoBannerList, ArrayList videoTittleList) {
         this.context = context;
-        this.imageList.addAll(iList);
-        this.tittleList.addAll(tList);
+        this.videoBannerList.addAll(videoBannerList);
+        this.videoTittleList.addAll(videoTittleList);
     }
 
     @NonNull
@@ -38,19 +49,26 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.Vide
         return holder;
     }
 
+
+
     @Override
     public void onBindViewHolder(@NonNull VideoListHolder holder, final int position) {
-        //Glide.with(context).asBitmap().load(imageList.get(position)).load(holder.videoBanner);
 
-        holder.videoBanner.setImageDrawable((BitmapDrawable) imageList.get(position));
-        holder.videoTitle.setText(tittleList.get(position).toString());
+        Glide.with(context).load(videoBannerList.get(position)).into(holder.videoBanner);
+        //holder.videoBanner.setImageDrawable((BitmapDrawable) videoBannerList.get(position));
+        holder.videoTitle.setText(videoTittleList.get(position).toString());
         holder.videoBanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (tempCount == 0) {
                     Intent intent = new Intent(context, VideoExoPlayer.class);
                     Bundle bundle = new Bundle();
-                    bundle.putString("title", tittleList.get(position).toString());
+                    bundle.putString(APIConstant.TITLE, videoTittleList.get(position).toString());
+                    bundle.putString(APIConstant.SINGER_NAME, selectedSingerName);
+                    bundle.putString(APIConstant.TYPE,APIConstant.VIDEO);
+                    bundle.putString(APIConstant.ARTIST_ID,String.valueOf(artistId));
+                    bundle.putString(APIConstant.VIDEO_DESCRIPTION,descriptionList.get(position).toString());
+                    bundle.putString(APIConstant.VIDEO_URL,videoURLList.get(position).toString());
                     intent.putExtras(bundle);
                     context.startActivity(intent);
                     tempCount++;
@@ -63,7 +81,15 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.Vide
 
     @Override
     public int getItemCount() {
-        return imageList.size();
+        return videoBannerList.size();
+    }
+
+    public void setVideoArrayList(int artistId, String selectedSingerName, ArrayList descriptionList, ArrayList videoURLList) {
+        this.artistId = artistId;
+        this.selectedSingerName = selectedSingerName;
+        this.descriptionList = descriptionList;
+        this.videoURLList = videoURLList;
+
     }
 
     class VideoListHolder extends RecyclerView.ViewHolder {

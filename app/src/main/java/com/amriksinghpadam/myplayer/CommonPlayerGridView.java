@@ -163,6 +163,9 @@ public class CommonPlayerGridView extends AppCompatActivity {
                             artistIdList.add(obj.getString("artistid"));
                             bannerList.add(obj.getString("videobannerurl"));
                             tittleList.add(obj.getString("videotitle"));
+                            singerNameList.add(obj.getString("artistname"));
+                            discriptionList.add(obj.getString("videodescription"));
+                            songURLList.add(obj.getString("videourl"));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -176,6 +179,9 @@ public class CommonPlayerGridView extends AppCompatActivity {
                             artistIdList.add(obj.getString("artistid"));
                             bannerList.add(obj.getString("videobannerurl"));
                             tittleList.add(obj.getString("videotitle"));
+                            singerNameList.add(obj.getString("artistname"));
+                            discriptionList.add(obj.getString("videodescription"));
+                            songURLList.add(obj.getString("videourl"));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

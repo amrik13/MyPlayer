@@ -44,7 +44,7 @@ public class NavigationItemRequest {
             Network network = connectivityManager.getActiveNetwork();
             if (network != null) {
                 APIConstant.CONNECTIVITY = true;
-                refreshicon.setVisibility(View.GONE);
+                if(refreshicon!=null) refreshicon.setVisibility(View.GONE);
                 new NavigationItemAPICallTask().execute(
                         APIConstant.SSL_SCHEME+
                         APIConstant.BASE_URL+
@@ -55,7 +55,7 @@ public class NavigationItemRequest {
             NetworkInfo network = connectivityManager.getActiveNetworkInfo();
             if (network != null) {
                 APIConstant.CONNECTIVITY = true;
-                refreshicon.setVisibility(View.GONE);
+                if(refreshicon!=null) refreshicon.setVisibility(View.GONE);
                 new NavigationItemAPICallTask().execute(
                         APIConstant.SSL_SCHEME+
                         APIConstant.BASE_URL+
@@ -65,7 +65,7 @@ public class NavigationItemRequest {
         }
         if (!APIConstant.CONNECTIVITY) {
             showToast(mContext.getResources().getString(R.string.internet_error_msg));
-            refreshicon.setVisibility(View.VISIBLE);
+            if(refreshicon!=null) refreshicon.setVisibility(View.VISIBLE);
         }
 
     }

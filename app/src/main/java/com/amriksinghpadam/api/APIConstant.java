@@ -35,6 +35,7 @@ public class APIConstant {
     final public static String VIDEO = "video";
     final public static String DISCOVER_SONG = "discoversong";
     final public static String ARTIST_SONG = "artistsong";
+    final public static String ARTIST_VIDEO = "artistvideo";
     final public static String ARTIST_URL_PARAM = "player_api/call_api_request.php?artist_data=ARTIST";
     final public static String LATEST_URL_PARAM = "player_api/call_api_request.php?latest_song=LATEST+SONG";
     final public static String DISCOVER_URL_PARAM = "player_api/call_api_request.php?language_data=LANGUAGE";
@@ -47,6 +48,7 @@ public class APIConstant {
     final public static String TOP_AUTO_CAROUSEL_BANNER_URL_PARAM = "player_api/call_api_request.php?all_carousel_data=CAROUSEL";
     //$$artist$id$$ this need to replace by artist id
     final public static String FILTER_ARTIST_SONG_URL_PARAM = "player_api/call_api_request.php?artist_song=$$artist$id$$&artist_song_content=ARTIST-SONG";
+    final public static String FILTER_ARTIST_VIDEO_URL_PARAM = "player_api/call_api_request.php?artist_video=$$artist$id$$&artist_video_content=ARTIST-VIDEO";
     //$$language$id$$ this need to replace by artist id
     final public static String FILTER_LANGUAGE_SONG_URL = "player_api/call_api_request.php?discover_song=$$language$id$$&discover_song_content=DICSCOVER+SONG";
     final public static String TOP_IMAGE = "topimage";
@@ -60,6 +62,8 @@ public class APIConstant {
     //Media Pager View Selectiong Key
     final public static String URL = "url";
     final public static String ARTIST_ID = "artistid";
+    final public static String ARTIST_ID_LIST = "artistidlist";
+    final public static String ARTIST_ARRAY_LIST = "artistarraylist";
     final public static String DESCRIPTION = "description";
     final public static String SECTION = "section";
     final public static int ARTIST_CODE = 1;

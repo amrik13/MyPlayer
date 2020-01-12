@@ -57,7 +57,7 @@ public class ExoPlayerFragment extends Fragment {
     private SimpleExoPlayer player;
     private ImageView shareBtnImg;
     private ProgressBar progressBar;
-    private TextView videoTitle,metaDescription,singerNameTextView,relatedContentTextView;
+    private TextView videoTitle,metaDescription,singerNameTextView,relatedContentTextView,typeTextView;
     private String vTitle,singerName,description,contentURL,type,artistId;
     private RecyclerView relatedContentRecyclerView;
     private ArrayList imageArrayList = new ArrayList();
@@ -83,6 +83,7 @@ public class ExoPlayerFragment extends Fragment {
         singerNameTextView = view.findViewById(R.id.metadataSingerNameId);
         relatedContentRecyclerView = view.findViewById(R.id.related_content_recyclerview_id);
         relatedContentTextView = view.findViewById(R.id.related_content_text_id);
+        typeTextView = view.findViewById(R.id.type_textview_id);
         progressBar = view.findViewById(R.id.progressBar_id);
         progressBar.setVisibility(View.GONE);
         initializePlayer();
@@ -116,7 +117,7 @@ public class ExoPlayerFragment extends Fragment {
         singerName = getActivity().getIntent().getExtras().getString(APIConstant.SINGER_NAME);
         relatedContentTextView.setText("Related " +type.substring(0, 1).toUpperCase()+type.substring(1)
                 +"s By "+singerName.substring(0, 1).toUpperCase()+singerName.substring(1)+":");
-
+        typeTextView.setText("Type: "+type.toUpperCase());
         if(type.equals(APIConstant.SONG)) {
             description = getActivity().getIntent().getExtras().getString(APIConstant.SONG_DESCRIPTION);
             contentURL = getActivity().getIntent().getExtras().getString(APIConstant.SONG_URL);
@@ -155,6 +156,11 @@ public class ExoPlayerFragment extends Fragment {
         if (type.equals(APIConstant.VIDEO)) {
             description = getActivity().getIntent().getExtras().getString(APIConstant.VIDEO_DESCRIPTION);
             contentURL = getActivity().getIntent().getExtras().getString(APIConstant.VIDEO_URL);
+            if(getArguments()!=null){
+                vTitle = getArguments().getString(APIConstant.TITLE);
+                contentURL = getArguments().getString(APIConstant.URL);
+                description = getArguments().getString(APIConstant.DESCRIPTION);
+            }
             videoTitle.setText(TextUtils.isEmpty(vTitle) || vTitle == null ? "Loading..." : vTitle);
             metaDescription.setText(TextUtils.isEmpty(description) || description == null ? "Description: " + "Loading..." : "Description: " + description);
             singerNameTextView.setText(TextUtils.isEmpty(singerName) || singerName == null ? "Singer: " + "Loading..." : "Singer: " + singerName);
@@ -168,8 +174,7 @@ public class ExoPlayerFragment extends Fragment {
             DataSource.Factory datasourcefactory = new DefaultDataSourceFactory(
                     context, Util.getUserAgent(context,"CloudinaryExoplaye"));
             ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-            Uri videoURL = Uri.parse(TextUtils.isEmpty(contentURL)||contentURL==null?" "
-                    : contentURL);
+            Uri videoURL = Uri.parse(TextUtils.isEmpty(contentURL) || contentURL==null ? " " : contentURL);
             Log.d("videoURL",contentURL);
             MediaSource mediaSource = new ExtractorMediaSource(
                     videoURL, datasourcefactory, extractorsFactory, null,null);
@@ -180,25 +185,40 @@ public class ExoPlayerFragment extends Fragment {
     }
 
     public void initRelatedRecyclerView(){
-// check here for song and video type
         APIConstant.CONNECTIVITY = false;
-        String sharedPrefKey = SharedPrefUtil.RELATED_SONG_JSON_RESPONSE;
+        String sharedPrefKey = "";
+        if(type.equals(APIConstant.SONG)) {
+            sharedPrefKey = SharedPrefUtil.RELATED_SONG_JSON_RESPONSE;
+        }
+        if(type.equals(APIConstant.VIDEO)) {
+            sharedPrefKey = SharedPrefUtil.RELATED_VIDEO_JSON_RESPONSE;
+        }
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             Network network = connectivityManager.getActiveNetwork();
             if (network != null) {
                 APIConstant.CONNECTIVITY = true;
-
-                String artistParam = APIConstant.FILTER_ARTIST_SONG_URL_PARAM.replace("$$artist$id$$",artistId);
+                String artistParam = "";
+                if(type.equals(APIConstant.SONG)) {
+                    artistParam = APIConstant.FILTER_ARTIST_SONG_URL_PARAM.replace("$$artist$id$$",artistId);
+                }
+                if(type.equals(APIConstant.VIDEO)) {
+                    artistParam = APIConstant.FILTER_ARTIST_VIDEO_URL_PARAM.replace("$$artist$id$$",artistId);
+                }
                 new CallRelatedContentAPI(sharedPrefKey).execute(APIConstant.SSL_SCHEME+APIConstant.BASE_URL+
                         artistParam);
             }
         } else {
             NetworkInfo network = connectivityManager.getActiveNetworkInfo();
             if (network != null) {
-
                 APIConstant.CONNECTIVITY = true;
-                String artistParam = APIConstant.FILTER_ARTIST_SONG_URL_PARAM.replace("$$artist$id$$",artistId);
+                String artistParam = "";
+                if(type.equals(APIConstant.SONG)) {
+                    artistParam = APIConstant.FILTER_ARTIST_SONG_URL_PARAM.replace("$$artist$id$$",artistId);
+                }
+                if(type.equals(APIConstant.VIDEO)) {
+                    artistParam = APIConstant.FILTER_ARTIST_VIDEO_URL_PARAM.replace("$$artist$id$$",artistId);
+                }
                 new CallRelatedContentAPI(sharedPrefKey).execute(APIConstant.SSL_SCHEME+APIConstant.BASE_URL+
                         artistParam);
             }
@@ -210,23 +230,38 @@ public class ExoPlayerFragment extends Fragment {
     }
 
     public void bindRelatedContentView(){
-        // check song or video type
-        ArrayList<JSONObject> artistArrayList = SharedPrefUtil.getRelatedArtistSongJsonResponse(context,null);
-        for (int i=0;i<artistArrayList.size();i++){
-            try {
-                JSONObject obj = artistArrayList.get(i);
-                imageArrayList.add(obj.getString("songbannerurl"));
-                contentnameArrayList.add(obj.getString("songtitle"));
-                contentURLList.add(obj.getString("songurl"));
-                descriptionList.add(obj.getString("songdescription"));
-            } catch (Exception e) {
-                e.printStackTrace();
+        if(type.equals(APIConstant.SONG)) {
+            ArrayList<JSONObject> artistArrayList = SharedPrefUtil.getRelatedArtistSongJsonResponse(context, null);
+            for (int i = 0; i < artistArrayList.size(); i++) {
+                try {
+                    JSONObject obj = artistArrayList.get(i);
+                    imageArrayList.add(obj.getString("songbannerurl"));
+                    contentnameArrayList.add(obj.getString("songtitle"));
+                    contentURLList.add(obj.getString("songurl"));
+                    descriptionList.add(obj.getString("songdescription"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if(type.equals(APIConstant.VIDEO)) {
+            ArrayList<JSONObject> artistArrayList = SharedPrefUtil.getRelatedArtistVideoJsonResponse(context, null);
+            for (int i = 0; i < artistArrayList.size(); i++) {
+                try {
+                    JSONObject obj = artistArrayList.get(i);
+                    imageArrayList.add(obj.getString("videobannerurl"));
+                    contentnameArrayList.add(obj.getString("videotitle"));
+                    contentURLList.add(obj.getString("videourl"));
+                    descriptionList.add(obj.getString("videodescription"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         relatedContentRecyclerView.setLayoutManager(layoutManager);
         RelatedViewAdapter videoRecyclerViewAdapter = new RelatedViewAdapter(
-                context, imageArrayList, contentnameArrayList,descriptionList,contentURLList,fm);
+                context, imageArrayList, contentnameArrayList,descriptionList,contentURLList,fm,type);
         relatedContentRecyclerView.setAdapter(videoRecyclerViewAdapter);
 
     }
@@ -256,7 +291,12 @@ public class ExoPlayerFragment extends Fragment {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             if(response!=null && !TextUtils.isEmpty(response)){
-                SharedPrefUtil.setFilterSongJsonResponse(context,response,sharedPrefKey);
+                if(type.equals(APIConstant.SONG)) {
+                    SharedPrefUtil.setFilterSongJsonResponse(context,response,sharedPrefKey);
+                }
+                if(type.equals(APIConstant.VIDEO)) {
+                    SharedPrefUtil.setArtistVideoJsonResponse(context,response,sharedPrefKey);
+                }
                 bindRelatedContentView();
                 progressBar.setVisibility(View.GONE);
             }else {

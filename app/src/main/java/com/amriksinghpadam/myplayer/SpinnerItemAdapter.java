@@ -10,15 +10,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+
 public class SpinnerItemAdapter extends ArrayAdapter<String> {
 
     private Context context;
     private TextView singerName;
-    private String[] singerListArray;
+    private ArrayList singerListArray = new ArrayList();
 
-    public SpinnerItemAdapter(@NonNull Context context, int resource, @NonNull String[] objects) {
-        super(context,resource,objects);
-        singerListArray = objects;
+    public SpinnerItemAdapter(@NonNull Context context, int resource, ArrayList singerList) {
+        super(context,resource,singerList);
+        singerListArray.addAll(singerList);
         this.context = context;
     }
 
@@ -38,8 +40,7 @@ public class SpinnerItemAdapter extends ArrayAdapter<String> {
 
         View view = inflater.inflate(R.layout.spinner_single_item_singer,parent,false);
         singerName = view.findViewById(R.id.spinner_items_id);
-
-        singerName.setText(singerListArray[position]);
+        singerName.setText(singerListArray.get(position).toString());
         return view;
     }
 }

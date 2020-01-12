@@ -6,28 +6,57 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".VideoList">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/vListToolbarId"
-        android:padding="5dp"
-        app:title=" "
-        android:elevation="10dp"
-        android:background="@color/titlecolor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-        <Spinner
-            android:id="@+id/spinnerSinger"
-            android:elevation="20dp"
-            android:layout_width="wrap_content"
-            android:tooltipText="Select Artist"
-            android:layout_height="wrap_content"/>
-    </androidx.appcompat.widget.Toolbar>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/videoListRecyclerViewId"
-        android:layout_margin="5dp"
-        android:layout_gravity="center"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/vListToolbarId"
+            android:padding="5dp"
+            app:title=" "
+            android:elevation="10dp"
+            android:background="@color/titlecolor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+            <Spinner
+                android:id="@+id/spinnerSinger"
+                android:elevation="20dp"
+                android:layout_width="match_parent"
+                android:tooltipText="Select Artist"
+                android:layout_height="wrap_content"/>
+        </androidx.appcompat.widget.Toolbar>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/nodata_layout"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:src="@drawable/nodata"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/progressBar_id"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ProgressBar
+            android:layout_centerInParent="true"
+            android:src="@drawable/nodata"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/videoListRecyclerViewId"
+            android:layout_margin="5dp"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
 
 </LinearLayout>

@@ -31,11 +31,13 @@ public class RelatedViewAdapter extends RecyclerView.Adapter<RelatedViewAdapter.
     private ArrayList descriptionList = new ArrayList();
     private View view;
     private FragmentManager fm;
+    private String type;
 
     public RelatedViewAdapter(
             Context context,ArrayList conentImgList,
-            ArrayList contentNameList,ArrayList descriptionList, ArrayList contentURLList,FragmentManager fm) {
+            ArrayList contentNameList,ArrayList descriptionList, ArrayList contentURLList,FragmentManager fm, String type) {
         this.fm = fm;
+        this.type = type;
         this.context = context;
         this.conentImgList.addAll(conentImgList);
         this.contentNameList.addAll(contentNameList);
@@ -96,6 +98,7 @@ public class RelatedViewAdapter extends RecyclerView.Adapter<RelatedViewAdapter.
             ft.replace(R.id.exo_frag_layout_id,exoFrag);
             Bundle bundle = new Bundle();
             bundle.putString(APIConstant.TITLE,contentNameList.get(position).toString());
+            bundle.putString(APIConstant.TYPE,type);
             bundle.putString(APIConstant.URL,contentURLList.get(position).toString());
             bundle.putString(APIConstant.DESCRIPTION,descriptionList.get(position).toString());
             exoFrag.setArguments(bundle);
