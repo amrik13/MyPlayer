@@ -169,7 +169,6 @@ public class ExoPlayerFragment extends Fragment {
             TrackSelection.Factory factory = new AdaptiveTrackSelection.Factory(meter);
             TrackSelector trackSelector = new DefaultTrackSelector(factory);
             player = ExoPlayerFactory.newSimpleInstance(context,trackSelector);
-            exoplayerView.setPlayer(player);
             //PlaybackControlView controlView = new PlaybackControlView(this);
             DataSource.Factory datasourcefactory = new DefaultDataSourceFactory(
                     context, Util.getUserAgent(context,"CloudinaryExoplaye"));
@@ -178,9 +177,11 @@ public class ExoPlayerFragment extends Fragment {
             Log.d("videoURL",contentURL);
             MediaSource mediaSource = new ExtractorMediaSource(
                     videoURL, datasourcefactory, extractorsFactory, null,null);
+            exoplayerView.setPlayer(player);
             player.prepare(mediaSource);
-            player.setPlayWhenReady(false);
+
         }
+        player.setPlayWhenReady(true);
 
     }
 
@@ -305,9 +306,23 @@ public class ExoPlayerFragment extends Fragment {
             }
         }
     }
+
     @Override
     public void onPause() {
         super.onPause();
+        if(type.equals(APIConstant.VIDEO)) {
+            player.setPlayWhenReady(false);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         player.stop();
     }
 

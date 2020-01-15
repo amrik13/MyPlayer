@@ -78,9 +78,12 @@ public class VideoList extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 String id = artistIdList.get(position).toString();
                 APIConstant.IS_SHARED_PREF_SAVED = false;
-                callAPIOnSpinnerChange(id);
                 videoBannerList.clear();
                 videoTittleList.clear();
+                videoURLList.clear();
+                descriptionList.clear();
+                callAPIOnSpinnerChange(id);
+
                 //getVideoData();
 //                VideoListAdapter adapter = new VideoListAdapter(VideoList.this,noDataImgView, videoBannerList, videoTittleList);
 //                videoListRecyclerView.setAdapter(adapter);
