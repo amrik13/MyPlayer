@@ -15,7 +15,7 @@
     <string name="discover">Discover</string>
     <string name="most_watched">Most Watched</string>
     <string name="new_video">New Video</string>
-    <string name="hindi_and_punjabi"><![CDATA[Hindi & Punjabi]]></string>
+    <string name="hindi_and_punjabi">Punjabi</string>
     <string name="english_video">English Video</string>
     <string name="video">video</string>
     <string name="empty_shared_pref_error_msg">oops!! Sorry, We are facing some technical issues or there is some connection error.</string>

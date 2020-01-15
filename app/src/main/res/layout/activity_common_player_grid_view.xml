@@ -19,11 +19,13 @@
 
     <FrameLayout
         android:padding="5dp"
+        android:background="@color/blackColor"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/common_grid_recycler_id"
+            android:background="@color/blackColor"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <RelativeLayout

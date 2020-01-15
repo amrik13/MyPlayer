@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D7DFDF">
+    android:background="@color/blackColor">
 
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D7DFDF"
+    android:background="@color/blackColor"
     android:gravity="center"
     android:orientation="horizontal" >
 
@@ -44,12 +44,12 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/songCardViewId"
-        android:background="#BDDEDE"
+        android:background="@color/blackColor"
         android:layout_width="150dp"
         android:layout_height="180dp"
         android:layout_gravity="center"
         android:layout_marginRight="80dp"
-        app:cardCornerRadius="@dimen/cardview_compat_inset_shadow"
+        app:cardCornerRadius="10dp"
         android:clickable="true" >
         <LinearLayout
             android:id="@+id/linearLayout1"
@@ -67,16 +67,16 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:layout_weight="2"
-                android:background="#FFFFFF"
+                android:layout_weight="4"
+                android:background="@color/titlecolor"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/songTitleId"
                     android:layout_gravity="center"
-                    android:textSize="25sp"
-                    android:textColor="@color/titlecolor"
+                    android:textSize="20sp"
+                    android:textColor="@color/whiteColor"
                     android:fontFamily="sans-serif"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -89,11 +89,11 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/videoCardViewId"
-        android:background="#BDDEDE"
+        android:background="@color/titlecolor"
         android:layout_width="150dp"
         android:layout_height="180dp"
         android:layout_gravity="center"
-        app:cardCornerRadius="@dimen/cardview_compat_inset_shadow"
+        app:cardCornerRadius="10dp"
         android:layout_marginLeft="80dp" >
 
         <LinearLayout
@@ -112,15 +112,15 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:layout_weight="2"
-                android:background="#FFFFFF"
+                android:layout_weight="4"
+                android:background="@color/titlecolor"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <TextView
                     android:id="@+id/videoTitleId"
                     android:layout_gravity="center"
-                    android:textSize="25sp"
-                    android:textColor="@color/titlecolor"
+                    android:textSize="20sp"
+                    android:textColor="@color/whiteColor"
                     android:fontFamily="sans-serif"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

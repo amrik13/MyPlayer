@@ -4,34 +4,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
-        android:background="#FFE6E6E6"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:id="@+id/video_fragment_id"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".VideoFragment" >
 
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/videoViewPagerId"
-                android:layout_width="match_parent"
-                android:layout_height="210dp"
-                android:clipToPadding="false"
-                android:background="#818181"
-                android:foregroundGravity="center" />
-            <TextView
-                android:id="@+id/headerHeadingId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="15dp"
-                android:textColor="#fff"
-                android:layout_marginTop="-25dp"
-                android:fontFamily="sans-serif-black"
-                android:textStyle="bold"
-                android:layout_gravity="center" />
+    <LinearLayout
+        android:id="@+id/video_fragment_id"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".VideoFragment" >
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/videoViewPagerId"
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            android:clipToPadding="false"
+            android:background="@color/blackColor"
+            android:foregroundGravity="center" />
+        <TextView
+            android:id="@+id/headerHeadingId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:textColor="@color/whiteColor"
+            android:layout_marginTop="-25dp"
+            android:fontFamily="sans-serif-black"
+            android:textStyle="bold"
+            android:layout_gravity="center" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_1dp"
+            android:background="@color/whiteColor"/>
+        <ScrollView
+            android:background="@color/blackColor"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/videoRecyclerViewId"
@@ -39,9 +45,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"/>
 
+        </ScrollView>
+    </LinearLayout>
 
-        </LinearLayout>
-    </ScrollView>
     <RelativeLayout
         android:id="@+id/progressBar_layout_id"
         android:visibility="gone"

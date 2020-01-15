@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/blackColor"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" >
 
@@ -9,6 +10,7 @@
 
         <LinearLayout android:orientation="vertical"
             android:layout_width="match_parent"
+            android:background="@color/blackColor"
             android:layout_height="match_parent">
 
             <LinearLayout android:gravity="center_horizontal"
@@ -99,7 +101,7 @@
                     app:pageTransformer="flow"
                     app:radius="0.0dip"
                     app:slideInterval="3200"
-                    app:strokeColor="#ff777777"
+                    app:strokeColor="#302E2E"
                     app:strokeWidth="1.0dip" />
             </androidx.cardview.widget.CardView>
             <LinearLayout android:orientation="vertical"
@@ -109,7 +111,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
                     <TextView android:textSize="15.0sp"
-                        android:textColor="#ff000000"
+                        android:textColor="@color/whiteColor"
                         android:padding="5.0dip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -118,7 +120,7 @@
                         android:fontFamily="sans-serif" />
                     <TextView android:textSize="13.0sp"
                         android:layout_weight="1"
-                        android:textColor="#670000"
+                        android:textColor="@color/colorPrimary"
                         android:padding="5.0dip"
                         android:id="@+id/more_latest_id"
                         android:gravity="right"
@@ -143,7 +145,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
                 <TextView android:textSize="15.0sp"
-                    android:textColor="#ff000000"
+                    android:textColor="@color/whiteColor"
                     android:padding="5.0dip"
                     android:layout_weight="4"
                     android:layout_width="wrap_content"
@@ -153,7 +155,7 @@
                     android:fontFamily="sans-serif" />
                 <TextView android:textSize="13.0sp"
                     android:layout_weight="1"
-                    android:textColor="#670000"
+                    android:textColor="@color/colorPrimary"
                     android:padding="5.0dip"
                     android:id="@+id/more_fetured_id"
                     android:gravity="right"
@@ -176,7 +178,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
                     <TextView android:textSize="15.0sp"
-                        android:textColor="#ff000000"
+                        android:textColor="@color/whiteColor"
                         android:padding="5.0dip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -185,7 +187,7 @@
                         android:fontFamily="sans-serif" />
                     <TextView android:textSize="13.0sp"
                         android:layout_weight="1"
-                        android:textColor="#670000"
+                        android:textColor="@color/colorPrimary"
                         android:padding="5.0dip"
                         android:id="@+id/more_discover_id"
                         android:gravity="right"

@@ -43,11 +43,11 @@
             android:id="@+id/tabLayoutId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/titlecolor"
+            android:background="@color/blackColor"
             app:tabTextColor="#fff"
             app:tabGravity="fill"
             app:tabMode="fixed"
-            app:tabIndicatorColor="#000"
+            app:tabIndicatorColor="@color/whiteColor"
             android:elevation="5dp" />
 
     </myviewpager.CustomPager>

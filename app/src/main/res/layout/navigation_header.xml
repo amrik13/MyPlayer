@@ -4,7 +4,7 @@
     android:orientation="vertical"
     app:layout_insetEdge="bottom"
     android:layout_width="match_parent"
-    android:background="#068A8D"
+    android:background="@color/titlecolor"
     android:gravity="bottom"
     android:layout_height="170dp">
 
@@ -13,7 +13,7 @@
             android:elevation="5dp"
             android:theme="@style/Widget.AppCompat.Button"
             android:scaleType="fitXY"
-            android:background="#068A8D"
+            android:background="@color/titlecolor"
             android:layout_width="110dp"
             android:layout_height="110dp"
             android:src="@drawable/logo"/>

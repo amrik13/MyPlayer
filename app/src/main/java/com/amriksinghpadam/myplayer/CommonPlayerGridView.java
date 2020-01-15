@@ -199,14 +199,14 @@ public class CommonPlayerGridView extends AppCompatActivity {
         adapter.setProgressBar(progressBarLayout,selectionCode);
         commonRecyclerView.setAdapter(adapter);
 
-        switch (type){
-            case APIConstant.SONG:
-                Toast.makeText(this,"Song Type",Toast.LENGTH_SHORT).show();
-            break;
-            case APIConstant.VIDEO:
-                Toast.makeText(this,"Video Type",Toast.LENGTH_SHORT).show();
-            break;
-        }
+//        switch (type){
+//            case APIConstant.SONG:
+//                Toast.makeText(this,"Song Type",Toast.LENGTH_SHORT).show();
+//            break;
+//            case APIConstant.VIDEO:
+//                Toast.makeText(this,"Video Type",Toast.LENGTH_SHORT).show();
+//            break;
+//        }
     }
 
     @Override

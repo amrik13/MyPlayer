@@ -27,10 +27,10 @@
                 <item android:title="New Arrival"
                     android:id="@+id/nav_new_video_id"
                     android:icon="@drawable/ic_new_releases_black_24dp"/>
-                <item android:title="Hindi/Punjabi"
+                <item android:title="Punjabi Videos"
                     android:id="@+id/nav_indian_video_id"
                     android:icon="@drawable/ic_local_movies_black_24dp"/>
-                <item android:title="English"
+                <item android:title="English Videos"
                     android:id="@+id/nav_englishi_video_id"
                     android:icon="@drawable/ic_hollywood_video_24dp"/>
             </group>

@@ -58,9 +58,9 @@ public class VideoFragment extends Fragment {
         model = new ArrayList<>();
         // adding image, title, desc in model object
         model.add(new VideoHeaderModel(R.drawable.mostwatch, "Most Watched", "Most Watched"));
-        model.add(new VideoHeaderModel(R.drawable.newvid, "New Video", "New Video"));
-        model.add(new VideoHeaderModel(R.drawable.punjabi, "Hindi & Punjabi", "Hindi & Punjabi"));
-        model.add(new VideoHeaderModel(R.drawable.english, "English Video", "English Video"));
+        model.add(new VideoHeaderModel(R.drawable.newvid, "New Videos", "New Videos"));
+        model.add(new VideoHeaderModel(R.drawable.punjabi, "Punjabi Videos", "Punjabi Videos"));
+        model.add(new VideoHeaderModel(R.drawable.english, "English Videos", "English Videos"));
         //initializing colors for viewpager
         Integer[] temp_color = {
                 getResources().getColor(R.color.most_watch_back_color),
