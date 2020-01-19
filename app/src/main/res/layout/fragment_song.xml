@@ -127,7 +127,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5.0dip"
-                        android:text="More"
+                        android:text="View All"
                         android:fontFamily="sans-serif" />
                 </LinearLayout>
                 <androidx.recyclerview.widget.RecyclerView
@@ -162,7 +162,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5.0dip"
-                    android:text="More"
+                    android:text="View All"
                     android:fontFamily="sans-serif" />
                 </LinearLayout>
                 <androidx.recyclerview.widget.RecyclerView
@@ -194,7 +194,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5.0dip"
-                        android:text="More"
+                        android:text="View All"
                         android:fontFamily="sans-serif" />
                 </LinearLayout>
                 <androidx.recyclerview.widget.RecyclerView

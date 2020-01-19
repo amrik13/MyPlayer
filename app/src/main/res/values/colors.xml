@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FF5353</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimary">#B60000</color>
+    <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="titlecolor">#FF2828</color>
+    <color name="titlecolor">#5C0101</color>
 
     <color name="yellow1">#A19060</color>
     <color name="blue2">#517F8E</color>
@@ -19,5 +19,5 @@
     <color name="blackColor">#F8000000</color>
     <color name="recycler_color">#161616</color>
 
-    <color name="statusbar">#3A006355</color>
+    <color name="statusbar">#000000</color>
 </resources>

@@ -34,10 +34,11 @@ public class PlayerLayoutAdapter extends RecyclerView.Adapter<PlayerLayoutAdapte
     private boolean isAllowToPlayer;
     private RelativeLayout progressBarLayout;
     private int selectionCode;
+    private ArrayList contentIdList = new ArrayList();
     private String type;
 
     PlayerLayoutAdapter(String type,Context context, ArrayList imageList, ArrayList titleList, ArrayList singleIdList,
-                        ArrayList artistIdList,boolean isAllowToPlayer, ArrayList singerNameList, ArrayList descriptionList, ArrayList songURLList) {
+                        ArrayList artistIdList,ArrayList contentIdList,boolean isAllowToPlayer, ArrayList singerNameList, ArrayList descriptionList, ArrayList songURLList) {
         this.context = context;
         this.type = type;
         this.imageList.addAll(imageList);
@@ -48,6 +49,7 @@ public class PlayerLayoutAdapter extends RecyclerView.Adapter<PlayerLayoutAdapte
         if(descriptionList!=null) this.descriptionList.addAll(descriptionList);
         if(songURLList!=null) this.songURLList.addAll(songURLList);
         if(artistIdList!=null) this.artistIdList.addAll(artistIdList);
+        if(contentIdList.size()>0) this.contentIdList.addAll(contentIdList);
     }
 
     @NonNull
@@ -98,6 +100,7 @@ public class PlayerLayoutAdapter extends RecyclerView.Adapter<PlayerLayoutAdapte
                             Intent intent = new Intent(context, VideoExoPlayer.class);
                             Bundle bundle = new Bundle();
                             bundle.putString(APIConstant.TYPE, type);
+                            bundle.putString(APIConstant.CONTENT_ID, contentIdList.size()>0 ? contentIdList.get(position).toString():"");
                             bundle.putString(APIConstant.ARTIST_ID,
                                     artistIdList.size()>0 ? artistIdList.get(position).toString():
                                             singleIdList.size()>0 ? singleIdList.get(position).toString():"");

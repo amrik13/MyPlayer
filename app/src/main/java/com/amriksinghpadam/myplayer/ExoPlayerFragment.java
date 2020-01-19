@@ -3,6 +3,7 @@ package com.amriksinghpadam.myplayer;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.IpSecManager;
 import android.net.Network;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amriksinghpadam.api.APIConstant;
+import com.amriksinghpadam.api.MostPlayedContent;
 import com.amriksinghpadam.api.SharedPrefUtil;
 import com.amriksinghpadam.api.SongAPIRequestWithFilter;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -58,13 +61,15 @@ public class ExoPlayerFragment extends Fragment {
     private ImageView shareBtnImg;
     private ProgressBar progressBar;
     private TextView videoTitle,metaDescription,singerNameTextView,relatedContentTextView,typeTextView;
-    private String vTitle,singerName,description,contentURL,type,artistId;
+    private String vTitle,singerName,description,contentURL,type,artistId,contentId;
     private RecyclerView relatedContentRecyclerView;
     private ArrayList imageArrayList = new ArrayList();
     private ArrayList contentnameArrayList = new ArrayList();
     private ArrayList contentURLList = new ArrayList();
+    private ArrayList contentIdList = new ArrayList();
     private ArrayList descriptionList = new ArrayList();
     private FragmentManager fm;
+    private Handler handler;
 
     public ExoPlayerFragment(Context context,FragmentManager fm) {
         this.context = context;
@@ -113,6 +118,7 @@ public class ExoPlayerFragment extends Fragment {
     public void initializePlayer(){
         vTitle = getActivity().getIntent().getExtras().getString(APIConstant.TITLE);
         type = getActivity().getIntent().getExtras().getString(APIConstant.TYPE);
+        contentId = getActivity().getIntent().getExtras().getString(APIConstant.CONTENT_ID);
         artistId = getActivity().getIntent().getExtras().getString(APIConstant.ARTIST_ID);
         singerName = getActivity().getIntent().getExtras().getString(APIConstant.SINGER_NAME);
         relatedContentTextView.setText("Related " +type.substring(0, 1).toUpperCase()+type.substring(1)
@@ -125,6 +131,7 @@ public class ExoPlayerFragment extends Fragment {
                 vTitle = getArguments().getString(APIConstant.TITLE);
                 contentURL = getArguments().getString(APIConstant.URL);
                 description = getArguments().getString(APIConstant.DESCRIPTION);
+                contentId = getArguments().getString(APIConstant.CONTENT_ID);
             }
             videoTitle.setText(TextUtils.isEmpty(vTitle) || vTitle == null ? "Loading..." : vTitle);
             metaDescription.setText(TextUtils.isEmpty(description) || description == null ? "Description: " + "Loading..." : "Description: " + description);
@@ -157,6 +164,7 @@ public class ExoPlayerFragment extends Fragment {
             description = getActivity().getIntent().getExtras().getString(APIConstant.VIDEO_DESCRIPTION);
             contentURL = getActivity().getIntent().getExtras().getString(APIConstant.VIDEO_URL);
             if(getArguments()!=null){
+                contentId = getArguments().getString(APIConstant.CONTENT_ID);
                 vTitle = getArguments().getString(APIConstant.TITLE);
                 contentURL = getArguments().getString(APIConstant.URL);
                 description = getArguments().getString(APIConstant.DESCRIPTION);
@@ -182,8 +190,28 @@ public class ExoPlayerFragment extends Fragment {
 
         }
         player.setPlayWhenReady(true);
+        handler = new Handler();
+        handler.post(runnable);
 
     }
+
+
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            handler.postDelayed(this,1000);
+            long currentPosition = player.getCurrentPosition();
+            if(currentPosition>APIConstant.PLAYED_TIME_FOR_COUNTER_API){
+                handler.removeCallbacks(this);
+                MostPlayedContent mostPlayedContent = new MostPlayedContent(type,context);
+                mostPlayedContent.updateSongPlayedCounter(contentId);
+                Log.d("duration-played",currentPosition+"");
+                Log.d("CID-played",contentId+"");
+            }
+        }
+    };
+
+
 
     public void initRelatedRecyclerView(){
         APIConstant.CONNECTIVITY = false;
@@ -236,6 +264,7 @@ public class ExoPlayerFragment extends Fragment {
             for (int i = 0; i < artistArrayList.size(); i++) {
                 try {
                     JSONObject obj = artistArrayList.get(i);
+                    contentIdList.add(obj.getString("songid"));
                     imageArrayList.add(obj.getString("songbannerurl"));
                     contentnameArrayList.add(obj.getString("songtitle"));
                     contentURLList.add(obj.getString("songurl"));
@@ -250,6 +279,7 @@ public class ExoPlayerFragment extends Fragment {
             for (int i = 0; i < artistArrayList.size(); i++) {
                 try {
                     JSONObject obj = artistArrayList.get(i);
+                    contentIdList.add(obj.getString("videoid"));
                     imageArrayList.add(obj.getString("videobannerurl"));
                     contentnameArrayList.add(obj.getString("videotitle"));
                     contentURLList.add(obj.getString("videourl"));
@@ -261,8 +291,8 @@ public class ExoPlayerFragment extends Fragment {
         }
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         relatedContentRecyclerView.setLayoutManager(layoutManager);
-        RelatedViewAdapter videoRecyclerViewAdapter = new RelatedViewAdapter(
-                context, imageArrayList, contentnameArrayList,descriptionList,contentURLList,fm,type);
+        RelatedViewAdapter videoRecyclerViewAdapter = new RelatedViewAdapter(context, imageArrayList,
+                contentnameArrayList,descriptionList,contentURLList,contentIdList,fm,type);
         relatedContentRecyclerView.setAdapter(videoRecyclerViewAdapter);
 
     }

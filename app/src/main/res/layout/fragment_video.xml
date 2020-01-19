@@ -17,7 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="210dp"
             android:clipToPadding="false"
-            android:background="@color/blackColor"
             android:foregroundGravity="center" />
         <TextView
             android:id="@+id/headerHeadingId"

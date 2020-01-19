@@ -34,6 +34,7 @@ public class APIConstant {
     final public static String SONG = "song";
     final public static String VIDEO = "video";
     final public static String DISCOVER_SONG = "discoversong";
+    final public static String MOST_WATCH_VIDEO = "mostplayedvideo";
     final public static String ARTIST_SONG = "artistsong";
     final public static String ARTIST_VIDEO = "artistvideo";
     final public static String ARTIST_URL_PARAM = "player_api/call_api_request.php?artist_data=ARTIST";
@@ -70,6 +71,12 @@ public class APIConstant {
     final public static int LATEST_SONG_CODE = 2;
     final public static int DISCOVER_SONG_CODE = 3;
     public static int SELECTED_SONG_SECTION;
+
+//Counter UPDate API Query
+    public static final String CONTENT_ID = "contentid";
+    public static final long PLAYED_TIME_FOR_COUNTER_API = 40000;
+    public static final String MOST_PLAYED_SONG_COUNTER_UPDATE_URL_PARAM = "model/Post.php?most_played_song=song&contentid=$$contentid$$";
+    public static final String MOST_PLAYED_VIDEO_COUNTER_UPDATE_URL_PARAM = "model/Post.php?most_played_video=video&contentid=$$contentid$$";
 
 // API server Connection with string response
     public static String connectToServerWithURL(String uri){

@@ -133,6 +133,29 @@ public class SharedPrefUtil {
         }
         return newArivalResponseList;
     }
+    public static ArrayList<JSONObject> getSideNavMostWatchJsonResponse(Context mContext,RelativeLayout nodataImageLayout){
+        ArrayList<JSONObject> mostWatchResponseList = new ArrayList<>();
+        SharedPreferences sharedPref = mContext.getSharedPreferences(MYPLAYER_SHARED_PREF,Context.MODE_PRIVATE);
+        String mostWatchJsonResponse = sharedPref.getString(MOST_WATCHED_JSON_RESPONSE,"");
+        if(mostWatchJsonResponse!=null && !TextUtils.isEmpty(mostWatchJsonResponse)) {
+            try {
+                JSONObject jsonObject = new JSONObject(mostWatchJsonResponse);
+                JSONArray jsonArray = jsonObject.getJSONArray(APIConstant.MOST_WATCH_VIDEO);
+                if(jsonArray!=null && jsonArray.length()>0){
+                    for(int i=0;i<jsonArray.length();i++){
+                        mostWatchResponseList.add(jsonArray.getJSONObject(i));
+                    }
+                }else{
+                    nodataImageLayout.setVisibility(View.VISIBLE);
+                }
+            } catch (Exception e) {
+                nodataImageLayout.setVisibility(View.VISIBLE);
+                e.printStackTrace();
+            }
+        }
+        return mostWatchResponseList;
+    }
+
     public static ArrayList<JSONObject> getSideNavHindiPunjabiJsonResponse(Context mContext,RelativeLayout nodataImageLayout){
         ArrayList<JSONObject> discoverResponseList = new ArrayList<>();
         SharedPreferences sharedPref = mContext.getSharedPreferences(MYPLAYER_SHARED_PREF,Context.MODE_PRIVATE);

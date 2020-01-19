@@ -31,17 +31,19 @@ public class CommonGridPlayerRecyclerViewAdapter extends RecyclerView.Adapter<Co
     private ArrayList descriptionList = new ArrayList();
     private ArrayList contentURLList = new ArrayList();
     private ArrayList artistIdList = new ArrayList();
+    private ArrayList contentIdList = new ArrayList();
     private int selectionCode;
     private String type;
     private RelativeLayout progressBarLayout;
 
     public CommonGridPlayerRecyclerViewAdapter(Context context, ArrayList bList, ArrayList tList,ArrayList singleIdList,
                            ArrayList singerNameList,ArrayList descriptionList, ArrayList contentURLList
-            ,ArrayList artistIdList,String type) {
+            ,ArrayList artistIdList,ArrayList contentIdList,String type) {
         this.context = context;
         bannerList.addAll(bList);
         titleList.addAll(tList);
         this.type = type;
+        if(contentIdList.size()>0) this.contentIdList.addAll(contentIdList);
         this.singleIdList.addAll(singleIdList);
         this.singerNameList.addAll(singerNameList);
         this.descriptionList.addAll(descriptionList);
@@ -109,6 +111,7 @@ public class CommonGridPlayerRecyclerViewAdapter extends RecyclerView.Adapter<Co
                         Intent intent = new Intent(context, VideoExoPlayer.class);
                         Bundle bundle = new Bundle();
                         bundle.putString(APIConstant.TYPE, type);
+                        bundle.putString(APIConstant.CONTENT_ID,contentIdList.size()>0 ? contentIdList.get(position).toString():"");
                         bundle.putString(APIConstant.ARTIST_ID, artistIdList.size()>0 ? artistIdList.get(position).toString():"");
                         bundle.putString(APIConstant.TITLE, titleList.size()>0 ? titleList.get(position).toString():"");
                         bundle.putString(APIConstant.SINGER_NAME, singerNameList.size() > 0 ? singerNameList.get(position).toString() : "");

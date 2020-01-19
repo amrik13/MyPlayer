@@ -65,9 +65,9 @@ public class VideoHeaderPagerAdapter extends PagerAdapter {
                 if (tempCount == 0) {
                     switch (position){
                         case 0:
-                            navRequest.startNavItemActivity(context.getResources().getString(R.string.most_watched),
+                            navRequest.startNavItemActivity( context.getResources().getString(R.string.most_watched),
                                     context.getResources().getString(R.string.video), APIConstant.MOST_WATCHED_URL_PARAM,
-                                    SharedPrefUtil.MOST_WATCHED_JSON_RESPONSE);
+                                    SharedPrefUtil.MOST_WATCHED_JSON_RESPONSE );
                             break;
                         case 1:
                             navRequest.startNavItemActivity(context.getResources().getString(R.string.new_video),

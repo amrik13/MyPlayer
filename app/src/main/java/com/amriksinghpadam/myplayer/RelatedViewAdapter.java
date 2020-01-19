@@ -29,16 +29,19 @@ public class RelatedViewAdapter extends RecyclerView.Adapter<RelatedViewAdapter.
     private ArrayList contentNameList = new ArrayList();
     private ArrayList contentURLList = new ArrayList();
     private ArrayList descriptionList = new ArrayList();
+    private ArrayList contentIdList = new ArrayList();
     private View view;
     private FragmentManager fm;
     private String type;
 
     public RelatedViewAdapter(
             Context context,ArrayList conentImgList,
-            ArrayList contentNameList,ArrayList descriptionList, ArrayList contentURLList,FragmentManager fm, String type) {
+            ArrayList contentNameList,ArrayList descriptionList, ArrayList contentURLList,
+            ArrayList contentIdList,FragmentManager fm, String type) {
         this.fm = fm;
         this.type = type;
         this.context = context;
+        this.contentIdList.addAll(contentIdList);
         this.conentImgList.addAll(conentImgList);
         this.contentNameList.addAll(contentNameList);
         this.contentURLList.addAll(contentURLList);
@@ -99,6 +102,7 @@ public class RelatedViewAdapter extends RecyclerView.Adapter<RelatedViewAdapter.
             Bundle bundle = new Bundle();
             bundle.putString(APIConstant.TITLE,contentNameList.get(position).toString());
             bundle.putString(APIConstant.TYPE,type);
+            bundle.putString(APIConstant.CONTENT_ID,contentIdList.get(position).toString());
             bundle.putString(APIConstant.URL,contentURLList.get(position).toString());
             bundle.putString(APIConstant.DESCRIPTION,descriptionList.get(position).toString());
             exoFrag.setArguments(bundle);

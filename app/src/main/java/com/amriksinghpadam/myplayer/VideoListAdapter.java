@@ -31,6 +31,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.Vide
     private ArrayList videoTittleList = new ArrayList();
     private ArrayList videoURLList = new ArrayList();
     private ArrayList descriptionList = new ArrayList();
+    private ArrayList contentIdList = new ArrayList();
     private int artistId;
 
     public VideoListAdapter(Context context, ArrayList videoBannerList, ArrayList videoTittleList) {
@@ -64,6 +65,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.Vide
                     Intent intent = new Intent(context, VideoExoPlayer.class);
                     Bundle bundle = new Bundle();
                     bundle.putString(APIConstant.TITLE, videoTittleList.get(position).toString());
+                    bundle.putString(APIConstant.CONTENT_ID, contentIdList.get(position).toString());
                     bundle.putString(APIConstant.SINGER_NAME, selectedSingerName);
                     bundle.putString(APIConstant.TYPE,APIConstant.VIDEO);
                     bundle.putString(APIConstant.ARTIST_ID,String.valueOf(artistId));
@@ -84,11 +86,13 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.Vide
         return videoBannerList.size();
     }
 
-    public void setVideoArrayList(int artistId, String selectedSingerName, ArrayList descriptionList, ArrayList videoURLList) {
+    public void setVideoArrayList(int artistId, String selectedSingerName, ArrayList descriptionList,
+                                  ArrayList videoURLList,ArrayList contentIdList ) {
         this.artistId = artistId;
+        this.contentIdList.addAll(contentIdList);
         this.selectedSingerName = selectedSingerName;
-        this.descriptionList = descriptionList;
-        this.videoURLList = videoURLList;
+        this.descriptionList.addAll(descriptionList);
+        this.videoURLList.addAll(videoURLList);
 
     }
 

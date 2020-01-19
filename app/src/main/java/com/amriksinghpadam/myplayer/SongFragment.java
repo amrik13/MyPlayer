@@ -49,6 +49,7 @@ public class SongFragment extends Fragment {
     private ArrayList topImgURLList = new ArrayList();
     private ArrayList autoCarouselImgURLList = new ArrayList();
     private ArrayList autoCarouselTitleURLList = new ArrayList();
+    private ArrayList contentIdList = new ArrayList();
     private int tempCount = 0;
     private RelativeLayout progressBarLayout;
     private String type;
@@ -123,6 +124,7 @@ public class SongFragment extends Fragment {
                 descriptionList.add(obj.getString("songdescription"));
                 songURLList.add(obj.getString("songurl"));
                 artistIdList.add(obj.getString("artistid"));
+                contentIdList.add(obj.getString("songid"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -208,21 +210,21 @@ public class SongFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(layoutManager);
         playerLayoutAdapter = new PlayerLayoutAdapter(type,getContext(),artistImageArrayList,
-                artistTitleArrayList,artistIdArrayList,artistIdList,false,null,null,null);
+                artistTitleArrayList,artistIdArrayList,artistIdList,contentIdList,false,null,null,null);
         playerLayoutAdapter.setProgressBar(progressBarLayout, APIConstant.ARTIST_CODE);
         recyclerView.setAdapter(playerLayoutAdapter);
 
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
         recyclerView2.setLayoutManager(layoutManager2);
         playerLayoutAdapter2 = new PlayerLayoutAdapter(type,getContext(),latestImageArrayList,
-                latestTitleArrayList,null,artistIdList,true,singerNameList,descriptionList,songURLList);
+                latestTitleArrayList,null,artistIdList,contentIdList,true,singerNameList,descriptionList,songURLList);
         playerLayoutAdapter2.setProgressBar(progressBarLayout, APIConstant.LATEST_SONG_CODE);
         recyclerView2.setAdapter(playerLayoutAdapter2);
 
         LinearLayoutManager layoutManager3 = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
         recyclerView3.setLayoutManager(layoutManager3);
         playerLayoutAdapter3 = new PlayerLayoutAdapter(type,getContext(),discoverImageArrayList,
-                discoverTitleArrayList,discoverIdArrayList,artistIdList,false,null,null,null);
+                discoverTitleArrayList,discoverIdArrayList,artistIdList,contentIdList,false,null,null,null);
         playerLayoutAdapter3.setProgressBar(progressBarLayout, APIConstant.DISCOVER_SONG_CODE);
         recyclerView3.setAdapter(playerLayoutAdapter3);
 

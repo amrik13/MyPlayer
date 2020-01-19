@@ -41,6 +41,7 @@ public class VideoList extends AppCompatActivity {
     private ArrayList videoBannerList = new ArrayList();
     private ArrayList videoURLList = new ArrayList();
     private ArrayList descriptionList = new ArrayList();
+    private ArrayList contentIdList = new ArrayList();
     private int artistId;
     private String selectedSingerName;
 
@@ -82,6 +83,7 @@ public class VideoList extends AppCompatActivity {
                 videoTittleList.clear();
                 videoURLList.clear();
                 descriptionList.clear();
+                contentIdList.clear();
                 callAPIOnSpinnerChange(id);
 
                 //getVideoData();
@@ -116,7 +118,7 @@ public class VideoList extends AppCompatActivity {
                         this.artistId = Integer.parseInt(obj.getString("artistid"));
                         selectedSingerName = obj.getString("artistname");
                     }
-
+                    contentIdList.add(obj.getString("videoid"));
                     videoBannerList.add(obj.getString("videobannerurl"));
                     videoTittleList.add(obj.getString("videotitle"));
                     descriptionList.add(obj.getString("videodescription"));
@@ -128,7 +130,7 @@ public class VideoList extends AppCompatActivity {
             }
         }
         VideoListAdapter adapter = new VideoListAdapter(VideoList.this,videoBannerList, videoTittleList);
-        adapter.setVideoArrayList(this.artistId,selectedSingerName,descriptionList,videoURLList);
+        adapter.setVideoArrayList(this.artistId,selectedSingerName,descriptionList,videoURLList,contentIdList);
         videoListRecyclerView.setAdapter(adapter);
 
     }
